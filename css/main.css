@@ -1,0 +1,289 @@
+.container {
+  margin: 0;
+  padding: 0;
+}
+h1,h4{
+  display: inline;
+}
+
+.logo {
+  font-size: 2rem;
+}
+nav div a h4 {
+  color: #edcd1f;
+}
+
+.back1, .back2, .back5 {
+height: 1vh;
+width: 100vh;
+margin: 0 auto;
+}
+.howSection {
+  background-color: black;
+}
+.fa-check-circle, .fa-envelope, .fa-mobile, .fa-dot-circle-o {
+  color: #edcd1f;
+}
+.parallax-container{
+  height: 63vh !important;;
+}
+.card .card-image  {
+  -webkit-filter: grayscale(50%); /* Safari 6.0 - 9.0 */
+    filter: grayscale(50%);
+}
+
+.centrado_Titulo{
+  color:  #edcd1f;
+  text-align: center;
+  
+}
+
+.brand-logo{
+  padding: 2rem;
+}
+
+
+
+
+/* INICIO Espaciado entre precio pesos y dolar */
+.espaciado {
+  margin-left: 40px; /* Ajusta el valor según necesites */
+}
+/* FIN Espaciado entre precio pesos y dolar */
+
+
+.container {
+  background-color: #f0f0f0; /* Color de fondo del contenedor */
+  padding: 20px; /* Espacio interno alrededor del contenido */
+  border-radius: 8px; /* Esquinas redondeadas, opcional */
+  text-align: center; /* Centra el contenido dentro del contenedor */
+}
+
+.tamanoNostros {
+  text-align: center;
+
+  font-style: italic;
+  font-size: 1.5em; /* Un poco más pequeña que el tamaño de fuente por defecto */
+  color: #6495ED; /* Un color agradable, puedes cambiarlo según tu preferencia */
+}
+/* img {
+    -webkit-filter: sepia(100%);
+    filter: sepia(100%);
+} */
+footer .page-footer .black .row{
+  margin: 0;
+  padding: 0;
+  width: 100vh;
+  position: relative;
+overflow: hidden;
+}
+
+.title1{
+  font-family: 'Pacifico', cursive;
+  font-size: 200px;
+}
+
+.title2 {
+  font-family: 'Cambay', sans-serif;
+  font-size: 100px;
+}
+
+a.carousel-item.active {
+    width: 50%;
+
+}
+div.carousel {
+  margin: 0;
+  padding: 0;
+  height: 50vh;
+}
+
+.soluciones-titulo {
+  text-align: center; /* Alinea el título a la izquierda */
+  margin-bottom: 20px; /* Espacio debajo del título */
+}
+
+.soluciones-lista {
+  text-align: center; /* Alinea el contenido a la izquierda */
+}
+
+.service-list {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.service-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px; /* Ajusta el margen según sea necesario */
+}
+
+.service-item i {
+  margin-right: 8px; /* Ajusta el margen según sea necesario */
+}
+
+
+.Titulo_TecnoArq {
+  background-color: black;
+  color: white; /* Asegura que el texto sea legible sobre el fondo negro */
+  padding: 20px; /* Ajusta el padding según sea necesario */
+  text-align: center; /* Centra el texto horizontalmente */
+}
+
+
+/* PRUEBA DESPLEGABLE NUEVO */
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+.dropdown-content .row {
+  display: flex;
+  padding: 8px;
+}
+
+.dropdown-content .column {
+  flex: 33.33%;
+  padding: 5px;
+  text-align: left;
+}
+
+.dropdown-content .column-header {
+  font-weight: bold;
+}
+
+.dropdown-content .item {
+  border-top: 1px solid #ddd;
+  padding-top: 5px;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+
+
+/* INICIO DESPLEGABLE SERVICIOS*/
+
+/* APPLE */
+.collapsible-contentApp {
+  display: none;
+  padding: 10px;
+  border: 1px solid #cccccc;
+  margin-top: 10px;
+}
+
+.collapsible-contentApp .row {
+  display: flex;
+  justify-content: space-between;
+}
+.collapsible-contentApp .column {
+  flex: 1;
+}
+
+.collapsible-buttonApp{
+  color:  #edcd1f;
+}
+
+
+/* SANSUNG */
+.collapsible-content {
+  display: none;
+  padding: 10px;
+  border: 1px solid #cccccc;
+  margin-top: 10px;
+}
+
+.collapsible-content .row {
+  display: flex;
+  justify-content: space-between;
+}
+.collapsible-content .column {
+  flex: 1;
+}
+
+.collapsible-button{
+  color:  #edcd1f;
+}
+
+/* XIAOMI */
+.collapsible-contentXia {
+  display: none;
+  padding: 10px;
+  border: 1px solid #cccccc;
+  margin-top: 10px;
+}
+
+.collapsible-contentXia .row {
+  display: flex;
+  justify-content: space-between;
+}
+.collapsible-contentXia .column {
+  flex: 1;
+}
+
+.collapsible-buttonXia{
+  color:  #edcd1f;
+}
+
+/* MOTO */
+.collapsible-contentMot {
+  display: none;
+  padding: 10px;
+  border: 1px solid #cccccc;
+  margin-top: 10px;
+}
+
+.collapsible-contentMot .row {
+  display: flex;
+  justify-content: space-between;
+}
+.collapsible-contentMot .column {
+  flex: 1;
+}
+
+.collapsible-buttonMot{
+  color:  #edcd1f;
+}
+
+/* RRR */
+.collapsible-content_rrr {
+  display: none;
+  padding: 10px;
+  border: 1px solid #cccccc;
+  margin-top: 10px;
+}
+
+.collapsible-content_rrr .row {
+  display: flex;
+  justify-content: space-between;
+}
+.collapsible-content_rrr .column {
+  flex: 1;
+}
+
+.collapsible-button_rrr{
+  color:  #edcd1f;
+}
+
+/* FIN DESPLEGABLE SERVICIOS*/
+
+.button-desple{
+  color: #edcd1f;
+}
+
+/* footer */
+.color_number{
+  color:#ffffff;
+  text-decoration-line: underline;
+}
