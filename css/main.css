@@ -256,19 +256,19 @@ div.carousel {
   color:  #edcd1f;
 }
 
-/* RRR */
-.collapsible-content_rrr {
+/* Auricular */
+.collapsible-contentAuricular {
   display: none;
   padding: 10px;
   border: 1px solid #cccccc;
   margin-top: 10px;
 }
 
-.collapsible-content_rrr .row {
+.collapsible-contentAuricular .row {
   display: flex;
   justify-content: space-between;
 }
-.collapsible-content_rrr .column {
+.collapsible-contentAuricular .column {
   flex: 1;
 }
 
