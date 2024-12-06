@@ -40,7 +40,7 @@
     <li><a href="#ServiciosLink">Servicio</a></li> 
     <li><a href="#contactosLink">Contacto</a></li>
   </ul>
-
+  
   <!-- Quienes somos -->
     <div class="Titulo_TecnoArq">
       <div >
@@ -60,27 +60,26 @@
         <h3><i class="fa-brands fa-apple"></i> Apple <button class="button-desple" onclick="toggleCollapsible('collapsible-contentApp')">+</button></h3>
         <div class="collapsible-contentApp">
 
-            <div class="row">
-              <div class="column">
-                  <i class="fa fa-dot-circle-o" aria-hidden="true"></i><span>Iphone 15 128gb</span>
-              </div>
-              <div class="column">
-                  <span>$1400000<span class="espaciado"></span>975usd</span><a class="espaciado" href="https://api.whatsapp.com/send?phone=1128650088&text=Hola, quisiera informacion Iphone 15 128gb!" target="_blank">
-                    comprar
-                  </a>                 
-              </div>
+          <div class="row">
+            <div class="column">
+              <i class="fa fa-dot-circle-o" aria-hidden="true"></i>
+              <span>Apple iPhone 15 128GB Pink + Accesorios!</span>
             </div>
-
-            <div class="row">
-              <div class="column">
-                  <i class="fa fa-dot-circle-o" aria-hidden="true"></i><span>Iphone 15 Pro 128gb</span>
-              </div>
-              <div class="column">
-                  <span>$1780000<span class="espaciado"></span>1240usd</span><a class="espaciado" href="https://api.whatsapp.com/send?phone=1128650088&text=Hola, quisiera informacion del Iphone 15 Pro 128gb!" target="_blank">
-                    comprar
-                  </a>                 
-              </div>
+            <div class="column">
+              <span id="price-display">$1.300.000</span></i><span>1000usd</span>
+              <input
+                type="number"
+                id="price-input"
+                style="display: none;"
+                value="1400000"
+              />
+              <a class="espaciado" href="https://api.whatsapp.com/send?phone=1128650088&text=Hola, quisiera informacion Iphone 15 128gb!" target="_blank">
+                Comprar
+              </a>
             </div>
+          </div>
+          <button id="edit-price-btn" style="display: none;">Modificar Precio</button>
+          
 
         </div>
     </div>
@@ -93,10 +92,10 @@
 
                 <div class="row">
                   <div class="column">
-                      <i class="fa fa-dot-circle-o" aria-hidden="true"></i><span>Samsung A15 8gb 256gb</span>
+                      <i class="fa fa-dot-circle-o" aria-hidden="true"></i><span>Samsung S24 12gb 512gb + Accesorios!</span>
                   </div>
                   <div class="column">
-                      <span>$420000<span class="espaciado"></span>290usd</span><a class="espaciado" href="https://api.whatsapp.com/send?phone=1128650088&text=Hola, quisiera informacion del A15!" target="_blank">
+                      <span>$1.900.000<span class="espaciado"></span>1750usd</span><a class="espaciado" href="https://api.whatsapp.com/send?phone=1128650088&text=Hola, quisiera informacion del A15!" target="_blank">
                         comprar
                       </a>                 
                   </div>
@@ -104,10 +103,10 @@
 
                 <div class="row">
                     <div class="column">
-                        <i class="fa fa-dot-circle-o" aria-hidden="true"></i><span>Samsung A25 8gb 256gb</span>
+                        <i class="fa fa-dot-circle-o" aria-hidden="true"></i><span>Samsung A25 8gb 256gb + Accesorios!</span>
                     </div>
                     <div class="column">
-                        <span>$520000<span class="espaciado"></span>360usd</span><a class="espaciado" href="https://api.whatsapp.com/send?phone=1128650088&text=Hola, quisiera informacion del A25!" target="_blank">
+                        <span>$370.000<span class="espaciado"></span>350usd</span><a class="espaciado" href="https://api.whatsapp.com/send?phone=1128650088&text=Hola, quisiera informacion del A25!" target="_blank">
                           comprar
                         </a>
                     </div>
@@ -115,22 +114,22 @@
 
                 <div class="row">
                   <div class="column">
-                      <i class="fa fa-dot-circle-o" aria-hidden="true"></i><span>Samsung A35 8gb 256gb</span>
+                      <i class="fa fa-dot-circle-o" aria-hidden="true"></i><span>Samsung A35 8gb 256gb + Accesorios!</span>
                   </div>
                   <div class="column">
-                      <span>$720000<span class="espaciado"></span>490usd</span><a class="espaciado" href="https://api.whatsapp.com/send?phone=1128650088&text=Hola, quisiera informacion del A35!" target="_blank">
-                        comprar
+                      <span>$460.000<span class="espaciado"></span>440usd</span><a class="espaciado" href="https://api.whatsapp.com/send?phone=1128650088&text=Hola, quisiera informacion del A35!" target="_blank">
+                        Comprar
                       </a>
                   </div>
               </div>
                 
                 <div class="row">
                   <div class="column">
-                      <i class="fa fa-dot-circle-o" aria-hidden="true"></i><span>Samsung A55 8gb 256gb</span>
+                      <i class="fa fa-dot-circle-o" aria-hidden="true"></i><span>Samsung A55 8gb 256gb + Accesorios!</span>
                   </div>
                   <div class="column">
-                    <span>$800000<span class="espaciado"></span>560usd</span><a class="espaciado" href="https://api.whatsapp.com/send?phone=1128650088&text=Hola, quisiera informacion del A55!" target="_blank">
-                      comprar
+                    <span>$000<span class="espaciado"></span>000usd</span><a class="espaciado" href="https://api.whatsapp.com/send?phone=1128650088&text=Hola, quisiera informacion del A55!" target="_blank">
+                      Consultar stock
                     </a>                               
                   </div>
                 </div>
@@ -149,79 +148,36 @@
           <h3>Xiaomi <button class="button-desple" onclick="toggleCollapsible('collapsible-contentXia')">+</button></h3>
           <div class="collapsible-contentXia">
 
-              <div class="row">
-                <div class="column">
-                  <i class="fa fa-dot-circle-o" aria-hidden="true"></i><span>Xiaomi Redmi Note 13 256/8GB</span>
-                </div>
-                <div class="column">
-                    <span>$4350000<span class="espaciado"></span>300usd</span><a class="espaciado" href="https://api.whatsapp.com/send?phone=1128650088&text=Hola, quisiera informacion!" target="_blank">
-                      comprar
-                    </a>                 
-                </div>
-              </div>
-
-              <div class="row">
-                  <div class="column">
-                      <i class="fa fa-dot-circle-o" aria-hidden="true"></i><span>Xiaomi Redmi Note 13 5G 256/8GB</span>
-                  </div>
-                  <div class="column">
-                      <span>$500000<span class="espaciado"></span>345usd</span><a class="espaciado" href="https://api.whatsapp.com/send?phone=1128650088&text=Hola, quisiera informacion!" target="_blank">
-                        comprar
-                      </a>
-                  </div>
-              </div>
-
-              <div class="row">
-                <div class="column">
-                    <i class="fa fa-dot-circle-o" aria-hidden="true"></i><span>Xiaomi Redmi Note 13 PRO 256/8GB</span>
-                </div>
-                <div class="column">
-                    <span>$550000<span class="espaciado"></span>380usd</span><a class="espaciado" href="https://api.whatsapp.com/send?phone=1128650088&text=Hola, quisiera informacion!" target="_blank">
-                      comprar
-                    </a>
-                </div>
-              </div>
               
               <div class="row">
                 <div class="column">
-                    <i class="fa fa-dot-circle-o" aria-hidden="true"></i><span>Xiaomi Redmi Note 13 PRO 512/12GB</span>
+                    <i class="fa fa-dot-circle-o" aria-hidden="true"></i><span>Xiaomi Poco F6 Pro 16gb 1Tb Dual Sim + Accesorios!</span>
                 </div>
                 <div class="column">
-                  <span>$580000<span class="espaciado"></span>400usd</span><a class="espaciado" href="https://api.whatsapp.com/send?phone=1128650088&text=Hola, quisiera informacion!" target="_blank">
-                    comprar
-                  </a>                               
-                </div>
-              </div>
-              
-              <div class="row">
-                <div class="column">
-                    <i class="fa fa-dot-circle-o" aria-hidden="true"></i><span>Xiaomi Redmi Note 13 PRO (5G) 256/8GB</span>
-                </div>
-                <div class="column">
-                  <span>$650000<span class="espaciado"></span>425usd</span><a class="espaciado" href="https://api.whatsapp.com/send?phone=1128650088&text=Hola, quisiera informacion!" target="_blank">
-                    comprar
+                  <span>$1.050.000<span class="espaciado"></span>900usd</span><a class="espaciado" href="https://api.whatsapp.com/send?phone=1128650088&text=Hola, quisiera informacion!" target="_blank">
+                    Comprar
                   </a>                               
                 </div>
               </div>
 
               <div class="row">
                 <div class="column">
-                    <i class="fa fa-dot-circle-o" aria-hidden="true"></i><span>Xiaomi Redmi Note 13 PRO (5G) 512/12GB</span>
+                    <i class="fa fa-dot-circle-o" aria-hidden="true"></i><span>Realme Gt6 Dual Sim 16gb/512gb + Accesorios!</span>
                 </div>
                 <div class="column">
-                  <span>$680000<span class="espaciado"></span>425usd</span><a class="espaciado" href="https://api.whatsapp.com/send?phone=1128650088&text=Hola, quisiera informacion!" target="_blank">
-                    comprar
+                  <span>$1.140.000<span class="espaciado"></span>1040usd</span><a class="espaciado" href="https://api.whatsapp.com/send?phone=1128650088&text=Hola, quisiera informacion!" target="_blank">
+                    Comprar
                   </a>                               
                 </div>
               </div>
               
               <div class="row">
                 <div class="column">
-                    <i class="fa fa-dot-circle-o" aria-hidden="true"></i><span>Xiaomi Redmi Note 13 PRO PLUS 256/8GB</span>
+                    <i class="fa fa-dot-circle-o" aria-hidden="true"></i><span>Xiaomi 14 12gb/512gb Dual Sim + Accesorios! </span>
                 </div>
                 <div class="column">
-                  <span>$685000<span class="espaciado"></span>470usd</span><a class="espaciado" href="https://api.whatsapp.com/send?phone=1128650088&text=Hola, quisiera informacion!" target="_blank">
-                    comprar
+                  <span>$1.225.000<span class="espaciado"></span>1100usd</span><a class="espaciado" href="https://api.whatsapp.com/send?phone=1128650088&text=Hola, quisiera informacion!" target="_blank">
+                    Comprar
                   </a>                               
                 </div>
               </div>
@@ -266,11 +222,44 @@
 
         <div class="row">
           <div class="column">
-              <i class="fa fa-dot-circle-o" aria-hidden="true"></i><span>Auriculares Proximamente</span>
+              <i class="fa fa-dot-circle-o" aria-hidden="true"></i><span>Jbl Charge 5</span>
           </div>
           <div class="column">
-              <span>$000<span class="espaciado"></span>0usd</span><a class="espaciado" href="https://api.whatsapp.com/send?phone=1128650088&text=Hola, quisiera informacion!" target="_blank">
-                comprar
+              <span>$260.000<span class="espaciado"></span>2250usd</span><a class="espaciado" href="https://api.whatsapp.com/send?phone=1128650088&text=Hola, quisiera informacion!" target="_blank">
+                Comprar
+              </a>                 
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="column">
+              <i class="fa fa-dot-circle-o" aria-hidden="true"></i><span>Auriculares Jbl Endurance Peak 3</span>
+          </div>
+          <div class="column">
+              <span>$114.000<span class="espaciado"></span>105usd</span><a class="espaciado" href="https://api.whatsapp.com/send?phone=1128650088&text=Hola, quisiera informacion!" target="_blank">
+                Comprar
+              </a>                 
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="column">
+              <i class="fa fa-dot-circle-o" aria-hidden="true"></i><span>Auriculares Jbl Tour Pro 2</span>
+          </div>
+          <div class="column">
+              <span>$210.000<span class="espaciado"></span>195usd</span><a class="espaciado" href="https://api.whatsapp.com/send?phone=1128650088&text=Hola, quisiera informacion!" target="_blank">
+                Comprar
+              </a>                 
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="column">
+              <i class="fa fa-dot-circle-o" aria-hidden="true"></i><span>Auriculares Bluetooth Jbl Endurance Race Tws </span>
+          </div>
+          <div class="column">
+              <span>$83.000<span class="espaciado"></span>70usd</span><a class="espaciado" href="https://api.whatsapp.com/send?phone=1128650088&text=Hola, quisiera informacion!" target="_blank">
+                Comprar
               </a>                 
           </div>
         </div>
@@ -278,6 +267,26 @@
       </div>
   </div>
 </div>  
+
+<div class="row container">
+  <div class="col s12 m10 offset-m1" id="ServiciosLink">
+      <h3></i> Consolas <button class="button-desple" onclick="toggleCollapsible('collapsible-Consolas')">+</button></h3>
+      <div class="collapsible-Consolas">
+
+        <div class="row">
+          <div class="column">
+              <i class="fa fa-dot-circle-o" aria-hidden="true"></i><span>Nintendo Switch</span>
+          </div>
+          <div class="column">
+            <span>$600000<span class="espaciado"></span>540usd</span><a class="espaciado" href="https://api.whatsapp.com/send?phone=1128650088&text=Hola, quisiera informacion!" target="_blank">
+              comprar
+            </a>                               
+          </div>
+        </div>
+      </div>
+  </div>
+</div>  
+
 
   <!-- Soluciones en  -->
   <div class="section">
@@ -315,7 +324,7 @@
           <div class="col s12 m4">
             <div class="card">
               <div class="card-image">
-                <img src="assets/images/samsung244.png" height="250px">
+                <img src="assets/images/samsung244.png" height="280px">
                 <span class="card-title"></span>
               </div>
               <div class="card-content">
@@ -329,7 +338,7 @@
           <div class="col s12 m4">
             <div class="card">
               <div class="card-image">
-                <img src="assets/images/XIAMI-pocoF6.jpeg" height="250px">
+                <img src="assets/images/XIAMI-pocoF6.jpeg" height="280px">
                 <span class="card-title"></span>
               </div>
               <div class="card-content">
@@ -341,7 +350,7 @@
           <div class="col s12 m4">
             <div class="card">
               <div class="card-image">
-                <img src="assets/images/nintendo-1.png" height="250px">
+                <img src="assets/images/nintendo-1.png" height="280px">
                 <span class="card-title"></span>
               </div>
               <div class="card-content">

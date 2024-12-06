@@ -276,6 +276,27 @@ div.carousel {
   color:  #edcd1f;
 }
 
+/*CONSOLAS*/
+.collapsible-Consolas {
+  display: none;
+  padding: 10px;
+  border: 1px solid #cccccc;
+  margin-top: 10px;
+}
+
+.collapsible-Consolas .row {
+  display: flex;
+  justify-content: space-between;
+}
+.collapsible-Consolas .column {
+  flex: 1;
+}
+
+.collapsible-buttonConsolas{
+  color:  #edcd1f;
+}
+
+
 /* FIN DESPLEGABLE SERVICIOS*/
 
 .button-desple{
