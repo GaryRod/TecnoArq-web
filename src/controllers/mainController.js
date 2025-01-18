@@ -1,5 +1,11 @@
+const dbArticulos = require('../models/articulosModel')
+const dbMarcas = require('../models/marcasModel')
+
 const mainController = {
     index: async (req, res) => {
+        
+        let articulos = await dbArticulos.getAll();
+        let marcas = await dbMarcas.getAll();
         // let recomendados = productModel.buscado('recomendados');
         // let game = await db.Game.findAll({
         //     where: {
@@ -14,7 +20,7 @@ const mainController = {
         //     include: ['images']
         // })
         //  res.send("ok")
-        res.render('./index')
+        res.render('./index',{articulos, marcas})
         // res.render('./index', {game, game2, recomendados})
     },
     // support: (req, res) => {

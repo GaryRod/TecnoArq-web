@@ -1,10 +1,6 @@
-const db = require('../models/articulosModel')
-
 const adminController = {
 // Ruta para el área protegida (admin)
   dashboard: async (req, res) => {
-        let articulo = await db.findById('MOTO10');
-        let articulos = await db.getAll();
         res.send(`<h1>Bienvenido ${req.session.user} a la página de administración</h1><p>Aquí puedes ajustar los precios de los productos</p>`);
   },
   logout: (req, res) => {

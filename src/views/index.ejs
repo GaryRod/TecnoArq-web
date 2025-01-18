@@ -42,299 +42,46 @@
   </ul>
   
   <!-- Quienes somos -->
-    <div class="Titulo_TecnoArq">
-      <div >
-        <!-- <img width="300px" height="230px" src="/images/logoTecnoArq.jpg" alt=""> -->
-      </div>
+  <div class="Titulo_TecnoArq">
+    <div >
+      <!-- <img width="300px" height="230px" src="/images/logoTecnoArq.jpg" alt=""> -->
     </div>
+  </div>
 
   <!-- Servicios -->
-<div class="row container">
-    <div class="col s12 m10 offset-m1" id="ServiciosLink">
-        <h5>Nuestros precios se actualizan diariamente! </h5>
-    </div>
-</div>  
+  <div class="row container">
+      <div class="col s12 m10 offset-m1" id="ServiciosLink">
+          <h5>Nuestros precios se actualizan diariamente! </h5>
+      </div>
+  </div>  
 
-<div class="row container">
-    <div class="col s12 m10 offset-m1" id="ServiciosLink">
-        <h3><i class="fa-brands fa-apple"></i> Apple <button class="button-desple" onclick="toggleCollapsible('collapsible-contentApp')">+</button></h3>
-        <div class="collapsible-contentApp">
-
-          <div class="row">
-            <div class="column">
-                <i class="fa fa-dot-circle-o" aria-hidden="true"></i><span>Apple iPhone 15 128GB Pink + Accesorios!</span>
-            </div>
-            <div class="column">
-                <span>$1.100.000<span class="espaciado"></span>900usd</span><a class="espaciado" href="https://api.whatsapp.com/send?phone=1128650088&text=Hola, quisiera informacion del Apple iPhone 15 128GB!" target="_blank">
-                  Consultar stock
-                </a>                 
-            </div>
-          </div>
-          
-          <div class="row">
-            <div class="column">
-                <i class="fa fa-dot-circle-o" aria-hidden="true"></i><span>Apple iPhone 16 128GB Black + Accesorios!</span>
-            </div>
-            <div class="column">
-                <span>$1.400.000<span class="espaciado"></span>1100usd</span><a class="espaciado" href="https://api.whatsapp.com/send?phone=1128650088&text=Hola, quisiera informacion del Apple iPhone 16 128GB Black!" target="_blank">
-                  Consultar stock
-                </a>                 
-            </div>
-          </div>
-          
-          <div class="row">
-            <div class="column">
-                <i class="fa fa-dot-circle-o" aria-hidden="true"></i><span>Apple iPhone 16 Pro 128GB + Accesorios!</span>
-            </div>
-            <div class="column">
-                <span>$1.800.000<span class="espaciado"></span>1500usd</span><a class="espaciado" href="https://api.whatsapp.com/send?phone=1128650088&text=Hola, quisiera informacion del Apple iPhone 16 Pro 128GB!" target="_blank">
-                  Consultar stock
-                </a>                 
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="column">
-                <i class="fa fa-dot-circle-o" aria-hidden="true"></i><span>Apple iPhone 16 Pro 256GB + Accesorios!</span>
-            </div>
-            <div class="column">
-                <span>$1.950.000<span class="espaciado"></span>1600usd</span><a class="espaciado" href="https://api.whatsapp.com/send?phone=1128650088&text=Hola, quisiera informacion del Apple iPhone 16 Pro 256GB!" target="_blank">
-                  Consultar stock
-                </a>                 
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="column">
-                <i class="fa fa-dot-circle-o" aria-hidden="true"></i><span>Si desea solicitar uno de nuestros productos envíenos un mensaje al Whatsapp</span>
-            </div>
-          </div>
-
-        </div>
-    </div>
-</div>  
-
-<div class="row container">
+  <% marcas.forEach(marca => { %>
+    <div class="row container">
         <div class="col s12 m10 offset-m1" id="ServiciosLink">
-            <h3>Samsung <button class="button-desple" onclick="toggleCollapsible('collapsible-content')">+</button></h3>
-            <div class="collapsible-content">
-
-              <div class="row">
-                <div class="column">
-                    <i class="fa fa-dot-circle-o" aria-hidden="true"></i><span>Samsung S24 12gb 1TB + Accesorios!</span>
-                </div>
-                <div class="column">
-                    <span>$2.570.000<span class="espaciado"></span>2200usd</span><a class="espaciado" href="https://api.whatsapp.com/send?phone=1128650088&text=Hola, quisiera informacion del Samsung S24 12gb 512gb!" target="_blank">
-                      comprar
-                    </a>                 
-                </div>
-              </div>
-
-                <div class="row">
-                  <div class="column">
-                      <i class="fa fa-dot-circle-o" aria-hidden="true"></i><span>Samsung S24 12gb 512gb + Accesorios!</span>
-                  </div>
-                  <div class="column">
-                      <span>$2.000.000<span class="espaciado"></span>1650usd</span><a class="espaciado" href="https://api.whatsapp.com/send?phone=1128650088&text=Hola, quisiera informacion del Samsung S24 12gb 512gb!" target="_blank">
-                        comprar
-                      </a>                 
-                  </div>
-                </div>
-
-                <div class="row">
+            <h3><%= marca.nombre %> <button class="button-desple" onclick="toggleCollapsible('collapsible-contentApp')">+</button></h3>
+            <div class="collapsible-contentApp">
+              <% articulos.filter(articulo => articulo.codigoMarca === marca.codigo).forEach(articulo => {%>
+                  <div class="row">
                     <div class="column">
-                        <i class="fa fa-dot-circle-o" aria-hidden="true"></i><span>Samsung A25 8gb 256gb + Accesorios!</span>
+                        <i class="fa fa-dot-circle-o" aria-hidden="true"></i><span> <%= articulo.nombre %> + Accesorios!</span>
                     </div>
                     <div class="column">
-                        <span>$440.000<span class="espaciado"></span>350usd</span><a class="espaciado" href="https://api.whatsapp.com/send?phone=1128650088&text=Hola, quisiera informacion del Samsung A25 8gb 256gb!" target="_blank">
-                          comprar
-                        </a>
+                        <span>$<%= articulo.precio %><span class="espaciado"></span><%= articulo.precioUSD %>USD</span><a class="espaciado" href="https://api.whatsapp.com/send?phone=1128650088&text=Hola, quisiera informacion de <%= articulo.nombre %>!" target="_blank">
+                          Consultar stock
+                        </a>                 
                     </div>
-                </div>
-
-                <div class="row">
-                  <div class="column">
-                      <i class="fa fa-dot-circle-o" aria-hidden="true"></i><span>Samsung A35 8gb 256gb + Accesorios!</span>
                   </div>
-                  <div class="column">
-                      <span>$490.000<span class="espaciado"></span>440usd</span><a class="espaciado" href="https://api.whatsapp.com/send?phone=1128650088&text=Hola, quisiera informacion del Samsung A35 8gb 256gb!" target="_blank">
-                        Comprar
-                      </a>
-                  </div>
-              </div>
-
-                <div class="row">
-                  <div class="column">
-                      <i class="fa fa-dot-circle-o" aria-hidden="true"></i><span>Si desea solicitar uno de nuestros productos envíenos un mensaje al Whatsapp</span>
-                  </div>
-                </div>
-        </div>
-    </div>
-</div>
-
-<div class="row container">
-          <h3>Xiaomi <button class="button-desple" onclick="toggleCollapsible('collapsible-contentXia')">+</button></h3>
-          <div class="collapsible-contentXia">
-
-              
-              <div class="row">
-                <div class="column">
-                    <i class="fa fa-dot-circle-o" aria-hidden="true"></i><span>Xiaomi Poco F6 Pro 16gb 1Tb Dual Sim + Accesorios!</span>
-                </div>
-                <div class="column">
-                  <span>$1.200.000<span class="espaciado"></span>900usd</span><a class="espaciado" href="https://api.whatsapp.com/send?phone=1128650088&text=Hola, quisiera informacion del Xiaomi Poco F6 Pro 16gb 1Tb!" target="_blank">
-                    Comprar
-                  </a>                               
-                </div>
-              </div>
-
-              <div class="row">
-                <div class="column">
-                    <i class="fa fa-dot-circle-o" aria-hidden="true"></i><span>Realme Gt6 Dual Sim 16gb/512gb + Accesorios!</span>
-                </div>
-                <div class="column">
-                  <span>$1.140.000<span class="espaciado"></span>1040usd</span><a class="espaciado" href="https://api.whatsapp.com/send?phone=1128650088&text=Hola, quisiera informacion del Realme Gt6 Dual Sim 16gb/512gb!" target="_blank">
-                    Comprar
-                  </a>                               
-                </div>
-              </div>
-              
-              <div class="row">
-                <div class="column">
-                    <i class="fa fa-dot-circle-o" aria-hidden="true"></i><span>Xiaomi 14 12gb/512gb Dual Sim + Accesorios! </span>
-                </div>
-                <div class="column">
-                  <span>$1.225.000<span class="espaciado"></span>1100usd</span><a class="espaciado" href="https://api.whatsapp.com/send?phone=1128650088&text=Hola, quisiera informacion del Xiaomi 14 12gb/512gb Dual Sim!" target="_blank">
-                    Comprar
-                  </a>                               
-                </div>
-                
-              </div>
+                <% }); %>
               <div class="row">
                 <div class="column">
                     <i class="fa fa-dot-circle-o" aria-hidden="true"></i><span>Si desea solicitar uno de nuestros productos envíenos un mensaje al Whatsapp</span>
                 </div>
               </div>
-          </div>
-</div>
-
-<div class="row container">
-  <div class="col s12 m10 offset-m1" id="ServiciosLink">
-      <h3>Motorola <button class="button-desple" onclick="toggleCollapsible('collapsible-contentMot')">+</button></h3>
-      <div class="collapsible-contentMot">
-
-          <div class="row">
-            <div class="column">
-                <i class="fa fa-dot-circle-o" aria-hidden="true"></i><span>Motorola edge 50 Fusion 8GB/256GB Rosa Fragola</span>
             </div>
-            <div class="column">
-                <span>$750.000<span class="espaciado"></span>600usd</span><a class="espaciado" href="https://api.whatsapp.com/send?phone=1128650088&text=Hola, quisiera informacion del Motorola edge 50 Fusion 8GB/256GB" target="_blank">
-                  Consultar stock
-                </a>                 
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="column">
-                <i class="fa fa-dot-circle-o" aria-hidden="true"></i><span>Si desea solicitar uno de nuestros productos envíenos un mensaje al Whatsapp</span>
-            </div>
-          </div>
-      </div>
-  </div>
-</div>  
-
-<div class="row container">
-  <div class="col s12 m10 offset-m1" id="ServiciosLink">
-      <h3>Auriculares <button class="button-desple" onclick="toggleCollapsible('collapsible-contentAuricular')">+</button></h3>
-      <div class="collapsible-contentAuricular">
-
-        <div class="row">
-          <div class="column">
-              <i class="fa fa-dot-circle-o" aria-hidden="true"></i><span>Jbl Charge 5</span>
-          </div>
-          <div class="column">
-              <span>$260.000<span class="espaciado"></span>225usd</span><a class="espaciado" href="https://api.whatsapp.com/send?phone=1128650088&text=Hola, quisiera informacion" target="_blank">
-                comprar
-              </a>                 
-          </div>
         </div>
+    </div>  
+  <% }); %>  
 
-        <div class="row">
-          <div class="column">
-              <i class="fa fa-dot-circle-o" aria-hidden="true"></i><span>Auriculares Jbl Endurance Peak 3</span>
-          </div>
-          <div class="column">
-              <span>$114.000<span class="espaciado"></span>105usd</span><a class="espaciado" href="https://api.whatsapp.com/send?phone=1128650088&text=Hola, quisiera informacion" target="_blank">
-                comprar
-              </a>                 
-          </div>
-        </div>
-
-        <div class="row">
-          <div class="column">
-              <i class="fa fa-dot-circle-o" aria-hidden="true"></i><span>Auriculares Jbl Tour Pro 2</span>
-          </div>
-          <div class="column">
-              <span>$210.000<span class="espaciado"></span>195usd</span><a class="espaciado" href="https://api.whatsapp.com/send?phone=1128650088&text=Hola, quisiera informacion" target="_blank">
-                comprar
-              </a>                 
-          </div>
-        </div>
-
-        <div class="row">
-          <div class="column">
-              <i class="fa fa-dot-circle-o" aria-hidden="true"></i><span>Auriculares Bluetooth Jbl Endurance Race Tws </span>
-          </div>
-          <div class="column">
-              <span>$83.000<span class="espaciado"></span>70usd</span><a class="espaciado" href="https://api.whatsapp.com/send?phone=1128650088&text=Hola, quisiera informacion" target="_blank">
-                comprar
-              </a>                 
-          </div>
-        </div>
-        <div class="row">
-          <div class="column">
-              <i class="fa fa-dot-circle-o" aria-hidden="true"></i><span>Si desea solicitar uno de nuestros productos envíenos un mensaje al Whatsapp</span>
-          </div>
-        </div>
-      </div>
-  </div>
-</div>  
-
-<div class="row container">
-  <div class="col s12 m10 offset-m1" id="ServiciosLink">
-      <h3></i> Consolas <button class="button-desple" onclick="toggleCollapsible('collapsible-Consolas')">+</button></h3>
-      <div class="collapsible-Consolas">
-
-        <div class="row">
-          <div class="column">
-              <i class="fa fa-dot-circle-o" aria-hidden="true"></i><span>Nintendo Switch Oled 64GB Azul/Rojo</span>
-          </div>
-          <div class="column">
-            <span>$650.000<span class="espaciado"></span>540usd</span><a class="espaciado" href="https://api.whatsapp.com/send?phone=1128650088&text=Hola, quisiera informacion!" target="_blank">
-              comprar
-            </a>                               
-          </div>
-        </div>
-
-        <div class="row">
-          <div class="column">
-              <i class="fa fa-dot-circle-o" aria-hidden="true"></i><span>PS5 1TB SLIM con lectora</span>
-          </div>
-          <div class="column">
-            <span>$1.099.999<span class="espaciado"></span>900usd</span><a class="espaciado" href="https://api.whatsapp.com/send?phone=1128650088&text=Hola, quisiera informacion!" target="_blank">
-              Consultar stock
-            </a>                               
-          </div>
-        </div>
-
-        <div class="row">
-          <div class="column">
-              <i class="fa fa-dot-circle-o" aria-hidden="true"></i><span>Si desea solicitar uno de nuestros productos envíenos un mensaje al Whatsapp</span>
-          </div>
-        </div>
-      </div>
-  </div>
-</div>  
 
 
   <!-- Soluciones en  -->
