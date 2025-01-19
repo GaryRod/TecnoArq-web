@@ -8,12 +8,13 @@
   <link rel="stylesheet" href="css/main.css">
   <link href="https://fonts.googleapis.com/css?family=Cambay|Pacifico" rel="stylesheet">
   <!-- Compiled and minified CSS -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/css/materialize.min.css">
+  <link type="text/css" rel="stylesheet" href="css/materialize.min.css"  media="screen,projection"/>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" />
   <title>FisionTech</title>
   <link rel="icon" href="/images/Fision-tech.png">
   <!-- <link rel="icon" href="/icon/whatsapp.png"> -->
   <script src="https://kit.fontawesome.com/bb9a20c193.js" crossorigin="anonymous"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 </head>
 
 <body>
@@ -31,6 +32,9 @@
         <li><a href="#contactosLink">Contacto</a></li>
       </ul>
     </div>
+    <div>
+      <button data-target="modal1" class="btn modal-trigger"><i class="fa-solid fa-cart-shopping"></i></button>
+    </div>
   </nav>
   <!-- Mobil nav -->
   <ul class="sidenav" id="mobile-demo">
@@ -40,7 +44,6 @@
     <li><a href="#ServiciosLink">Servicio</a></li> 
     <li><a href="#contactosLink">Contacto</a></li>
   </ul>
-  
   <!-- Quienes somos -->
   <div class="Titulo_TecnoArq">
     <div >
@@ -55,32 +58,102 @@
       </div>
   </div>  
 
-  <% marcas.forEach(marca => { %>
-    <div class="row container">
-        <div class="col s12 m10 offset-m1" id="ServiciosLink">
-            <h3><%= marca.nombre %> <button class="button-desple" onclick="toggleCollapsible('collapsible-contentApp')">+</button></h3>
-            <div class="collapsible-contentApp">
-              <% articulos.filter(articulo => articulo.codigoMarca === marca.codigo).forEach(articulo => {%>
-                  <div class="row">
-                    <div class="column">
-                        <i class="fa fa-dot-circle-o" aria-hidden="true"></i><span> <%= articulo.nombre %> + Accesorios!</span>
-                    </div>
-                    <div class="column">
-                        <span>$<%= articulo.precio %><span class="espaciado"></span><%= articulo.precioUSD %>USD</span><a class="espaciado" href="https://api.whatsapp.com/send?phone=1128650088&text=Hola, quisiera informacion de <%= articulo.nombre %>!" target="_blank">
-                          Consultar stock
-                        </a>                 
-                    </div>
-                  </div>
-                <% }); %>
-              <div class="row">
-                <div class="column">
-                    <i class="fa fa-dot-circle-o" aria-hidden="true"></i><span>Si desea solicitar uno de nuestros productos envíenos un mensaje al Whatsapp</span>
-                </div>
+  <a class="waves-effect waves-light btn modal-trigger" href="#modal1">Abrir Modal</a>
+
+  <!-- Contenido del modal -->
+  <div id="modal1" class="modal">
+      <div class="modal-content">
+        <div class="step" id="step1">
+          <h4>Articulos</h4>
+          <div class="row" id="containerArts">
+            <div class="row">
+              <span class="column col s4">Nombre</span>
+              <span class="column col s4">Precio</span>
+              <span class="column col s4"></span>
+            </div>
+            <div class="row">
+              <span class="column col s4">Moto</span>
+              <span class="column col s4">1000,22</span>
+              <span class="column col s4">quitar</span>
+            </div>
+            <div class="row">
+              <span class="column col s4">Moto</span>
+              <span class="column col s4">1000,22</span>
+              <span class="column col s4">quitar</span>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <a href="#!" class="modal-close waves-effect waves-green btn-flat">Cerrar</a>
+            <a href="#!" id="next" class="waves-effect waves-green btn-flat green darken-3 orange-text text-lighten-5">Continuar</a>
+        </div>
+        </div>
+
+        <div class="step hide" id="step2">
+          <h4>Datos de pago</h4>
+          <form class="center-block" action="" method="post" id="submitDatos"enctype="multipart/form-data">
+            <div class="row">
+              <div class="input-field column col row">
+                <label for="nombre" class="select-label">Nombre</label>
+                <input id="nombre" type="password" class="chips browser-default">
+              </div>
+              <div class="input-field column col row">
+                <label for="apellido" class="select-label">Apellido</label>
+                <input id="apellido" type="text" class="chips browser-default">
               </div>
             </div>
+            <div class="row">
+              <div class="input-field column col row">
+                <label for="dni" class="select-label">DNI</label>
+                <input id="dni" type="text" class="chips browser-default">
+              </div>
+              <div class="input-field column col row">
+                <label for="email" class="select-label">Email</label>
+                <input id="email" type="text" class="chips browser-default">
+              </div>
+            </div>
+          </form>
+          <div class="modal-footer">
+            <a href="#!" class="modal-close waves-effect waves-green btn-flat">Cerrar</a>
+            <a href="#!" id="prev" class="waves-effect waves-green btn-flat">Anterior</a>
+            <a href="#!" id="comprar" class="waves-effect waves-green btn-flat green darken-3 orange-text text-lighten-5">Comprar</a>
+          </div>
         </div>
-    </div>  
-  <% }); %>  
+      </div>
+  </div>
+          
+  <section id="containerProducts">
+    <% marcas.forEach(marca => { %>
+      <div class="row container">
+          <div class="col s12 m10 offset-m1" id="ServiciosLink">
+              <h3><%= marca.nombre %> <button class="button-desple" onclick="toggleCollapsible('collapsible-contentApp')">+</button></h3>
+              <div class="collapsible-contentApp">
+                <% articulos.filter(articulo => articulo.codigoMarca === marca.codigo).forEach(articulo => {%>
+                    <div class="row">
+                      <div class="column">
+                          <i class="fa fa-dot-circle-o" aria-hidden="true"></i><span> <%= articulo.nombre %> + Accesorios!</span>
+                      </div>
+                      <div class="column">
+                          <span>$<%= articulo.precio %><span class="espaciado"></span><%= articulo.precioUSD %>USD</span><a class="espaciado" href="https://api.whatsapp.com/send?phone=1128650088&text=Hola, quisiera informacion de <%= articulo.nombre %>!" target="_blank">
+                            Consultar stock
+                          </a>                 
+                      </div>
+                      <div class="column">           
+                        <button class="button-desple" data-id='<%= articulo.codigo %>' 
+                          data-id='<%= articulo.nombre %>' data-id='<%= articulo.precio %>' 
+                          onclick="toggleCollapsible('collapsible-contentApp')">+</button>
+                      </div>
+                    </div>
+                  <% }); %>
+                <div class="row">
+                  <div class="column">
+                      <i class="fa fa-dot-circle-o" aria-hidden="true"></i><span>Si desea solicitar uno de nuestros productos envíenos un mensaje al Whatsapp</span>
+                  </div>
+                </div>
+              </div>
+          </div>
+      </div>  
+    <% }); %>  
+  </section>
 
 
 
@@ -170,6 +243,7 @@
       </div>
     </div>
 
+   
   <!-- Footer -->
   <footer class="page-footer black row" class="contactosLink" id="contactosLink" >
     <div class="col m6 s12 center">
@@ -199,7 +273,7 @@
 
   <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
   <!-- Compiled and minified JavaScript -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/js/materialize.min.js"></script>
+  <script type="text/javascript" src="js/materialize.min.js"></script>
   <script type="text/javascript" src="js/app.js"></script>
 
 </body>

@@ -308,3 +308,7 @@ div.carousel {
   color:#ffffff;
   text-decoration-line: underline;
 }
+
+.step{
+  transition: opacity 0.3s ease;
+}

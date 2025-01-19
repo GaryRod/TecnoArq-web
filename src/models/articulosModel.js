@@ -24,7 +24,7 @@ class Articulo{
         try {
             const pool = await connectToDatabase();
             const resultsBD = await pool.request()
-                .query('SELECT CODIGO_ARTICULO as codigo, NOMBRE_ARTICULO as nombre, CODIGO_MARCA_FK as codigoMarca, PRECIO as precio, PRECIO_USD as precioUSD FROM ARTICULOS'); // Cambia 'Users' por tu tabla
+                .query('SELECT CODIGO_ARTICULO as codigo, NOMBRE_ARTICULO as nombre, CODIGO_MARCA_FK as codigoMarca, PRECIO as precio, PRECIO_USD as precioUSD FROM ARTICULOS');
             const results = resultsBD.recordset.map(art => new Articulo(
                 art.codigo,
                 art.nombre,
@@ -34,6 +34,38 @@ class Articulo{
             ));
             await pool.close();
             return results;
+        } catch (error) {
+            console.error('Error al obtener articulos:', error);
+            res.status(500).send('Error al obtener usuarios');
+        }
+    }
+
+    static async insert(req, res) {
+        try {
+            const pool = await connectToDatabase();
+            const result = await pool.request()
+                .input('id', sql.VarChar, id)
+                .input('codigo', sql.VarChar, id)
+                .input('codigoMarca', sql.VarChar, id)
+                .input('precio', sql.Decimal, id)
+                .input('precioUSD', sql.Decimal, id)
+                .query('INSERT INTO ARTICULOS (CODIGO_ARTICULO, NOMBRE_ARTICULO, CODIGO_MARCA_FK, PRECIO, PRECIO_USD) VALUES(@id, @nombre,@codigoMarca, @precio,@precioUSD)');
+            await pool.close();
+            return result;
+        } catch (error) {
+            console.error('Error al obtener articulos:', error);
+            res.status(500).send('Error al obtener usuarios');
+        }
+    }
+
+    static async delete(req, res) {
+        try {
+            const pool = await connectToDatabase();
+            const result = await pool.request()
+                .input('id', sql.VarChar, id)
+                .query('DELETE FROM ARTICULOS WHERE CODIGO_ARTICULO = @id');
+            await pool.close();
+            return result;
         } catch (error) {
             console.error('Error al obtener articulos:', error);
             res.status(500).send('Error al obtener usuarios');
