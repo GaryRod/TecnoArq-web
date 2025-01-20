@@ -58,33 +58,19 @@
       </div>
   </div>  
 
-  <a class="waves-effect waves-light btn modal-trigger" href="#modal1">Abrir Modal</a>
+  <a class="waves-effect waves-light btn modal-trigger" href="#modal1" id="carritoCompra">Abrir Modal</a>
 
   <!-- Contenido del modal -->
   <div id="modal1" class="modal">
       <div class="modal-content">
         <div class="step" id="step1">
           <h4>Articulos</h4>
-          <div class="row" id="containerArts">
-            <div class="row">
-              <span class="column col s4">Nombre</span>
-              <span class="column col s4">Precio</span>
-              <span class="column col s4"></span>
-            </div>
-            <div class="row">
-              <span class="column col s4">Moto</span>
-              <span class="column col s4">1000,22</span>
-              <span class="column col s4">quitar</span>
-            </div>
-            <div class="row">
-              <span class="column col s4">Moto</span>
-              <span class="column col s4">1000,22</span>
-              <span class="column col s4">quitar</span>
-            </div>
+          <div class="row" id="containerArtsCarrito">
           </div>
           <div class="modal-footer">
             <a href="#!" class="modal-close waves-effect waves-green btn-flat">Cerrar</a>
-            <a href="#!" id="next" class="waves-effect waves-green btn-flat green darken-3 orange-text text-lighten-5">Continuar</a>
+            <a href="#!" id="limpiarCarrito" class="waves-effect waves-green btn-flat">Limpiar carrito</a>
+            <a href="#!" id="next" class="waves-effect waves-green btn-flat">Continuar</a>
         </div>
         </div>
 
@@ -138,9 +124,9 @@
                           </a>                 
                       </div>
                       <div class="column">           
-                        <button class="button-desple" data-id='<%= articulo.codigo %>' 
-                          data-id='<%= articulo.nombre %>' data-id='<%= articulo.precio %>' 
-                          onclick="toggleCollapsible('collapsible-contentApp')">+</button>
+                        <button class="agregarArticulo" data-codigo='<%= articulo.codigo %>' data-nombre='<%= articulo.nombre %>' 
+                          data-precio='<%= articulo.precio %>' data-preciousd='<%= articulo.precioUSD %>'
+                        >+</button>
                       </div>
                     </div>
                   <% }); %>

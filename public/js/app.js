@@ -1,6 +1,3 @@
-
-
-
 $(document).ready(function() {
   $('.sidenav').sidenav();
   $('.parallax').parallax();
@@ -39,19 +36,95 @@ function toggleCollapsible(collapsibleClass) {
   }
 }
 
+
 document.querySelector("#containerProducts").addEventListener('click', e => {
-  if (e.target.classList.contains('button-desple')) {
+  if (e.target.classList.contains('agregarArticulo')) {
     const product = e.target.dataset;
-    
+    let carrito = JSON.parse(localStorage.getItem("carrito")) || [];
+    if (carrito.find(art => art.codigo === product.codigo)) {
+      carrito.forEach(art => {
+        if (art.codigo === product.codigo) {
+          art.cantidad++;
+        }
+      })
+      localStorage.setItem("carrito", JSON.stringify(carrito))
+    }
+    else{
+      const articulo = {
+        codigo: product.codigo,
+        nombre: product.nombre,
+        precio: product.precio,
+        preciousd: product.preciousd,
+        cantidad: 1
+      }
+      carrito.push(articulo);
+    }
+    limpiarCarrito(true);
+    localStorage.setItem("carrito", JSON.stringify(carrito));
   }
 })
 
- 
-// function toggleCollapsibleApp() {
-//   var content = document.querySelector('.collapsible-contentApp');
-//   if (content.style.display === "none" || content.style.display === "") {
-//       content.style.display = "block";
-//   } else {
-//       content.style.display = "none";
-//   }
-// }
+document.querySelector("#containerArtsCarrito").addEventListener('click', e => {
+  let limpiarStorage = false;
+  const elementoActual = e.target;
+  const product = elementoActual.parentElement.dataset;
+  let carrito = JSON.parse(localStorage.getItem("carrito")) || [];
+  if (elementoActual.classList.contains('sumarArticulo')) {
+    carrito.forEach(art => {
+      if (art.codigo === product.codigo) {
+        art.cantidad++;
+      }
+    })
+    const cantidadArticulo = elementoActual.previousSibling.previousSibling;
+    cantidadArticulo.textContent = Number(cantidadArticulo.textContent) + 1;
+    limpiarStorage = true;
+  } 
+  else if (e.target.classList.contains('restarArticulo')){
+    carrito.forEach(art => {
+      if (art.codigo === product.codigo) {
+        art.cantidad--;
+      }
+    })
+    const cantidadArticulo = elementoActual.previousSibling;
+    cantidadArticulo.textContent = Number(cantidadArticulo.textContent) - 1;
+    limpiarStorage = true;
+  }
+  else if (elementoActual.classList.contains('eliminarArticulo')){
+    const product = elementoActual.parentElement.dataset;
+    let indice = carrito.findIndex(art => art.codigo === product.codigo);
+    carrito.pop(indice);
+    elementoActual.parentElement.parentElement.removeChild(elementoActual.parentElement)
+    limpiarStorage = true;
+  }
+  if (limpiarStorage) {
+    limpiarCarrito(false);
+    localStorage.setItem("carrito", JSON.stringify(carrito));
+  }
+})
+
+document.querySelector("#carritoCompra").addEventListener("click", e => {
+  const containerArts = document.querySelector("#containerArtsCarrito");
+  containerArts.innerHTML = '';
+  let carrito = JSON.parse(localStorage.getItem("carrito")) || [];
+  carrito.forEach(art => {
+    const div = document.createElement('div');
+    div.classList.add('row')
+    div.setAttribute('data-codigo', art.codigo)
+    let agregarArticulo = `<span class="column col s2">${art.nombre}</span><span class="column col s2">${art.precio}</span><span class="column col s2">${art.cantidad}</span><span class="column col s2 restarArticulo">-</span><span class="column col s2 sumarArticulo">+</span></div><span class="column col s2 eliminarArticulo">-</span>`;
+    div.innerHTML = agregarArticulo;
+    containerArts.appendChild(div);
+  })
+
+})
+
+document.querySelector("#limpiarCarrito").addEventListener("click", e => {
+  limpiarCarrito(true);
+})
+
+function limpiarCarrito(limpiarHTML){
+  if (limpiarHTML) {
+    const containerArts = document.querySelector("#containerArtsCarrito");
+    containerArts.innerHTML = '';
+  }
+  localStorage.removeItem("carrito");
+}
