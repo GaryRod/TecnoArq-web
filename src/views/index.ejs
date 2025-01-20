@@ -76,11 +76,16 @@
 
         <div class="step hide" id="step2">
           <h4>Datos de pago</h4>
-          <form class="center-block" action="" method="post" id="submitDatos"enctype="multipart/form-data">
+          <form class="center-block" action="" method="post" id="submitDatos" enctype="multipart/form-data">
+            <div class="row">
+              <div class="">
+                errrores
+              </div>
+            </div>
             <div class="row">
               <div class="input-field column col row">
                 <label for="nombre" class="select-label">Nombre</label>
-                <input id="nombre" type="password" class="chips browser-default">
+                <input id="nombre" type="text" class="chips browser-default">
               </div>
               <div class="input-field column col row">
                 <label for="apellido" class="select-label">Apellido</label>
@@ -95,6 +100,26 @@
               <div class="input-field column col row">
                 <label for="email" class="select-label">Email</label>
                 <input id="email" type="text" class="chips browser-default">
+              </div>
+            </div>
+            <div class="row">
+              <div class="input-field column col row">
+                <label for="provincia" class="select-label">Provincia</label>
+                <input id="provincia" type="text" class="chips browser-default">
+              </div>
+              <div class="input-field column col row">
+                <label for="localidad" class="select-label">Localidad</label>
+                <input id="localidad" type="text" class="chips browser-default">
+              </div>
+            </div>
+            <div class="row">
+              <div class="input-field column col row">
+                <label for="calle" class="select-label">Calle</label>
+                <input id="calle" type="text" class="chips browser-default">
+              </div>
+              <div class="input-field column col row">
+                <label for="numeroCalle" class="select-label">Numero calle</label>
+                <input id="numeroCalle" type="text" class="chips browser-default">
               </div>
             </div>
           </form>
