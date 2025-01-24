@@ -1,8 +1,8 @@
-const express = require('express');
+import express from'express';
 const router = express.Router();
 // Solicito todas las funcionalidades del productController
-const authMiddleware = require('../middlewares/authMiddleware');
-const adminController = require('../controllers/adminController');
+import authMiddleware from'../middlewares/authMiddleware.js';
+import adminController from'../controllers/adminController.js';
 
 router.get('/login', (req, res) => {
   res.send(`
@@ -33,4 +33,4 @@ router.get('/', authMiddleware, adminController.dashboard);
 // // router.get('/support', productController.support);
 router.get('/logout', adminController.logout);
 
-module.exports = router
+export default router

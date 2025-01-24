@@ -1,14 +1,16 @@
-const express = require("express");
+import express  from"express";
 const app = express();
-const path = require('path');
-const session = require('express-session');
-const cookies = require('cookie-parser')
+import path  from'path';
+import { fileURLToPath } from 'url';
+import session  from'express-session';
+import cookieParser from'cookie-parser';
 
-const mainRoutes = require('./routes/mainRoutes')
-const adminRoutes = require('./routes/adminRoutes')
-// const userRoutes = require('./routes/userRoutes')
-// const userLoggedMiddleware = require('./middlewares/userLoggedMiddleware')
-
+import mainRoutes  from './routes/mainRoutes.js';
+import adminRoutes  from './routes/adminRoutes.js';
+// const userRoutes  from'./routes/userRoutes')
+// const userLoggedMiddleware  from'./middlewares/userLoggedMiddleware')
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 // Sessiones y Cookies
 app.use(session({
     secret: "No deberías estar leyendo esto!",
@@ -17,7 +19,7 @@ app.use(session({
     cookie: { secure: false } 
 }));
 
-app.use(cookies())
+app.use(cookieParser())
 
 // User logged
 // app.use(userLoggedMiddleware)
@@ -30,11 +32,10 @@ app.set('view engine', 'ejs')
 app.set("views", path.resolve(__dirname, "./views"))
 
 // // Requerimientos para formularios
-const methodOverride =  require('method-override'); 
-const { cookie } = require("express/lib/response");
+import methodOverride from 'method-override'; 
 app.use(methodOverride('_method'));
 
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: true }));
 app.use(express.json())
 
 // // Rutas

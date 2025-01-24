@@ -2,13 +2,15 @@ $(document).ready(function() {
   $('.sidenav').sidenav();
   $('.parallax').parallax();
 
-  const modal = document.querySelectorAll('.modal');
-  M.Modal.init(modal);
+  const modal = document.querySelector('.modal');
+  let instance = M.Modal.init(modal, {dismissible: false});
     
   const step1 = document.querySelector('#step1')
   const step2 = document.querySelector('#step2')
+  const step3 = document.querySelector('#step3')
   const next = document.querySelector('#next')
   const prev = document.querySelector('#prev')
+  const finalizaCompra = document.querySelector('#finalizaCompra')
   next.addEventListener('click', e => {
     step1.classList.add('hide');
     step2.classList.remove('hide');
@@ -16,6 +18,13 @@ $(document).ready(function() {
   prev.addEventListener('click', e => {
     step1.classList.remove('hide');
     step2.classList.add('hide');
+  })
+  
+  finalizaCompra.addEventListener('click', e => {
+    instance.close(modal);
+    limpiarCarrito(true);
+    step1.classList.remove('hide');
+    step3.classList.add('hide');
   })
 })
 
