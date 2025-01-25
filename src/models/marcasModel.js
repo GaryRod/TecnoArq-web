@@ -1,4 +1,4 @@
-const {connectToDatabase, sql} = require('../database/sqlserver');
+import {connectToDatabase, sql} from '../database/sqlserver.js';
 
 class Marca{
     constructor(codigo, nombre){
@@ -16,15 +16,16 @@ class Marca{
             return results;
     }
 
-    static async getAll(req, res) {
+    static async getAll(transaction) {
         try {
-            const pool = await connectToDatabase();
-            const resultsBD = await pool.request().query('SELECT CODIGO_MARCA as codigo, NOMBRE_MARCA as nombre FROM MARCAS'); // Cambia 'Users' por tu tabla
+            // const pool = await connectToDatabase();
+            const resultsBD = await transaction.request()
+                .query('SELECT CODIGO_MARCA as codigo, NOMBRE_MARCA as nombre FROM MARCAS'); // Cambia 'Users' por tu tabla
             const results = resultsBD.recordset.map(art => new Marca(
                 art.codigo,
                 art.nombre
             ));
-            await pool.close();
+            // await pool.close();
             return results;
         } catch (error) {
             console.error('Error al obtener articulos:', error);
@@ -33,4 +34,4 @@ class Marca{
     }
 }
 
-module.exports = Marca;
+export default Marca;

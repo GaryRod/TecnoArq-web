@@ -1,0 +1,80 @@
+<div id="modal1" class="modal">
+    <div class="modal-content">
+    <!-- Step 1 -->
+      <div class="step" id="step1">
+        <h4>Articulos</h4>
+        <div class="row" id="containerArtsCarrito">
+        </div>
+        <div class="modal-footer">
+          <a href="#!" class="modal-close waves-effect waves-green btn-flat">Cerrar</a>
+          <a href="#!" id="limpiarCarrito" class="waves-effect waves-green btn-flat">Limpiar carrito</a>
+          <a href="#!" id="next" class="waves-effect waves-green btn-flat">Continuar</a>
+      </div>
+      </div>
+    <!-- Step 2 -->
+      <div class="step hide" id="step2">
+        <h4>Datos de pago</h4>
+        <form class="center-block" id="submitDatos">
+          <div class="row">
+            <div id="errores" class="hide materialize-red-text ">
+            </div>
+          </div>
+          <div class="row">
+            <div class="input-field column col row">
+              <label for="nombre" class="select-label">Nombre</label>
+              <input id="nombre" name="nombre" type="text" class="chips browser-default">
+            </div>
+            <div class="input-field column col row">
+              <label for="apellido" class="select-label">Apellido</label>
+              <input id="apellido" name="apellido" type="text" class="chips browser-default">
+            </div>
+          </div>
+          <div class="row">
+            <div class="input-field column col row">
+              <label for="dni" class="select-label">DNI</label>
+              <input id="dni" type="text" name="dni" class="chips browser-default">
+            </div>
+            <div class="input-field column col row">
+              <label for="email" class="select-label">Email</label>
+              <input id="email" type="text" name="email" class="chips browser-default">
+            </div>
+          </div>
+          <div class="row">
+            <div class="input-field column col row">
+              <label for="provincia" class="select-label">Provincia</label>
+              <input id="provincia" type="text" name="provincia" class="chips browser-default">
+            </div>
+            <div class="input-field column col row">
+              <label for="localidad" class="select-label">Localidad</label>
+              <input id="localidad" type="text" name="localidad" class="chips browser-default">
+            </div>
+          </div>
+          <div class="row">
+            <div class="input-field column col row">
+              <label for="calle" class="select-label">Calle</label>
+              <input id="calle" type="text" name="calle" class="chips browser-default">
+            </div>
+            <div class="input-field column col row">
+              <label for="numeroCalle" class="select-label">Numero calle</label>
+              <input id="numeroCalle" type="text" name="numeroCalle" class="chips browser-default">
+            </div>
+          </div>
+          <div class="modal-footer">
+            <a href="#!" class="modal-close waves-effect waves-green btn-flat">Cerrar</a>
+            <a href="#!" id="prev" class="waves-effect waves-green btn-flat">Anterior</a>
+            <input id="submit" type="submit" class="waves-effect waves-green btn-flat green darken-3 orange-text text-lighten-5" value="Comprar">
+          </div>
+        </form>
+      </div>
+      <!-- Step 3 -->
+      <div class="step hide" id="step3">
+        <h4>Compra existosa!</h4>
+        <div class="row" id="containerArtsCarrito">
+        </div>
+            <p>Se envio el comprobante de compra a su bandeja de correo</p>
+        <div class="modal-footer">
+          <a href="#!" id="finalizaCompra" class="waves-effect waves-green btn-flat">Confirmar</a>
+      </div>
+      </div>
+    </div>
+</div>

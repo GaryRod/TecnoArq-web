@@ -1,4 +1,4 @@
-const {connectToDatabase, sql} = require('../database/sqlserver');
+import {connectToDatabase, sql} from '../database/sqlserver.js';
 
 class Articulo{
     constructor(codigo, nombre, codigoMarca, precio, precioUSD){
@@ -20,10 +20,10 @@ class Articulo{
             return results;
     }
 
-    static async getAll(req, res) {
+    static async getAll(transaction) {
         try {
-            const pool = await connectToDatabase();
-            const resultsBD = await pool.request()
+            // const pool = await connectToDatabase();
+            const resultsBD = await transaction.request()
                 .query('SELECT CODIGO_ARTICULO as codigo, NOMBRE_ARTICULO as nombre, CODIGO_MARCA_FK as codigoMarca, PRECIO as precio, PRECIO_USD as precioUSD FROM ARTICULOS');
             const results = resultsBD.recordset.map(art => new Articulo(
                 art.codigo,
@@ -32,11 +32,11 @@ class Articulo{
                 art.precio,
                 art.precioUSD
             ));
-            await pool.close();
+            // await pool.close();
             return results;
         } catch (error) {
             console.error('Error al obtener articulos:', error);
-            res.status(500).send('Error al obtener usuarios');
+            // res.status(500).send('Error al obtener usuarios');
         }
     }
 
@@ -73,4 +73,4 @@ class Articulo{
     }
 }
 
-module.exports = Articulo;
+export default Articulo;
