@@ -138,17 +138,30 @@ function limpiarCarrito(limpiarHTML){
   localStorage.removeItem("carrito");
 }
 
-  // Inicialización de Materialize para collapsibles
-  document.addEventListener('DOMContentLoaded', function() {
+
+  //  Inicialización de Materialize para collapsibles
+  // document.addEventListener('DOMContentLoaded', function() {
+  //   var elems = document.querySelectorAll('.collapsible');
+  //   M.Collapsible.init(elems);
+  // });
+
+    // Inicialización de Materialize para collapsibles
+  document.addEventListener('DOMContentLoaded', function () {
     const elems = document.querySelectorAll('.collapsible');
-    const instances = M.Collapsible.init(elems, {
-      onOpenStart: function(el) {
-        const arrow = el.querySelector('.arrow-icon');
-        if (arrow) arrow.classList.add('rotate'); // Añade la clase rotate
-      },
-      onCloseStart: function(el) {
-        const arrow = el.querySelector('.arrow-icon');
-        if (arrow) arrow.classList.remove('rotate'); // Remueve la clase rotate
-      }
+    const instances = M.Collapsible.init(elems);
+
+    // Agrega evento para cambiar el ícono al abrir o cerrar
+    document.querySelectorAll('.collapsible-header').forEach(header => {
+      header.addEventListener('click', function () {
+        const icon = this.querySelector('.fa-icon');
+        const isActive = this.parentElement.classList.contains('active');
+        if (isActive) {
+          icon.classList.remove('fa-circle-caret-up');
+          icon.classList.add('fa-circle-caret-down');
+        } else {
+          icon.classList.remove('fa-circle-caret-down');
+          icon.classList.add('fa-circle-caret-up');
+        }
+      });
     });
   });

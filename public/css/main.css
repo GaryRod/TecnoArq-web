@@ -343,3 +343,11 @@ div.carousel {
   .arrow-icon.rotate {
     transform: rotate(180deg); /* Rotación hacia arriba */
   }
+
+
+  /* CSS DE CARRITO DE COMPRAS */
+  #carritoCompra {
+    font-size: 1.55rem; /* Ajusta este valor al tamaño deseado */
+  }
+   /* CSS FIN CARRITO DE COMPRAS */
+  
