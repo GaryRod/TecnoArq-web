@@ -137,3 +137,18 @@ function limpiarCarrito(limpiarHTML){
   }
   localStorage.removeItem("carrito");
 }
+
+  // Inicialización de Materialize para collapsibles
+  document.addEventListener('DOMContentLoaded', function() {
+    const elems = document.querySelectorAll('.collapsible');
+    const instances = M.Collapsible.init(elems, {
+      onOpenStart: function(el) {
+        const arrow = el.querySelector('.arrow-icon');
+        if (arrow) arrow.classList.add('rotate'); // Añade la clase rotate
+      },
+      onCloseStart: function(el) {
+        const arrow = el.querySelector('.arrow-icon');
+        if (arrow) arrow.classList.remove('rotate'); // Remueve la clase rotate
+      }
+    });
+  });

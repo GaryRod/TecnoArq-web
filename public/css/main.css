@@ -312,3 +312,34 @@ div.carousel {
 .step{
   transition: opacity 0.3s ease;
 }
+
+
+  /* .collapsible-header {
+    display: flex;
+    justify-content: center; /* Centrar horizontalmente */
+    /* align-items: center;    Centrar verticalmente */
+    /* text-align: center;     Asegurar el texto centrado */
+    /* font-size: 1.2rem;      Ajustar tamaño del texto si es necesario */
+  /* }  */
+
+  .collapsible-header {
+    display: flex;
+    justify-content: space-between; /* Espacio entre el texto y la flecha */
+    align-items: center;           /* Centra verticalmente los elementos */
+    text-align: center;            /* Asegura el centrado del texto */
+    padding: 0 1rem;               /* Espaciado interno */
+    font-size: 1.2rem;             /* Ajusta el tamaño del texto si es necesario */
+  }
+
+  .collapsible-header span {
+    flex: 1; /* Hace que el texto ocupe todo el espacio disponible */
+    text-align: center; /* Centra el texto horizontalmente */
+  }
+
+  .arrow-icon {
+    transition: transform 0.3s ease; /* Animación suave para la rotación */
+  }
+
+  .arrow-icon.rotate {
+    transform: rotate(180deg); /* Rotación hacia arriba */
+  }
