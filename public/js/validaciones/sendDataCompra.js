@@ -1,4 +1,4 @@
-export default function enviarDatosCompra(event,nombre,apellido,email,provincia,localidad,calle,numeroCalle,numeroDocumento) {
+export default function enviarDatosCompra(event, nombre, apellido, email, provincia, localidad, calle, numeroCalle, numeroDocumento, numeroCelular) {
     event.preventDefault();
     let carrito = JSON.parse(localStorage.getItem("carrito"));
     const datosFormulario = {};
@@ -10,6 +10,7 @@ export default function enviarDatosCompra(event,nombre,apellido,email,provincia,
     datosFormulario.calle = calle;
     datosFormulario.numeroCalle = numeroCalle;
     datosFormulario.numeroDocumento = numeroDocumento;
+    datosFormulario.numeroCelular = numeroCelular;
     datosFormulario.carrito = carrito;
     fetch('/comprar', {
       method: 'POST',
@@ -20,6 +21,7 @@ export default function enviarDatosCompra(event,nombre,apellido,email,provincia,
     })
       .then(response => response.text())
       .then(data => {
+        console.log(data)
         const step2 = document.querySelector('#step2')
         const step3 = document.querySelector('#step3')
         step2.classList.add('hide');

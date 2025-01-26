@@ -25,7 +25,9 @@
     "inputmask": "^5.0.9",
     "method-override": "^3.0.0",
     "mssql": "^11.0.1",
-    "nodemon": "^3.1.9"
+    "nodemailer": "^6.10.0",
+    "nodemon": "^3.1.9",
+    "pdfkit-table": "^0.1.99"
   },
   "devDependencies": {
     "dotenv": "^16.4.7"
