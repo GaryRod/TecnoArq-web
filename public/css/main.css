@@ -351,3 +351,24 @@ div.carousel {
   }
    /* CSS FIN CARRITO DE COMPRAS */
   
+
+   /* INICIO ESTILOS MAS Y MENOS Y ELIMINAR DEL CARRITO */
+  .estiloCarrito {
+    display: inline-block; /* Para asegurarse de que los estilos del cuadro funcionen */
+    /* border: 2px solid blue; Borde azul */
+    border: 2px #26a69a;
+    border-radius: 5px; /* Bordes redondeados */
+    padding: 5px 10px; /* Espaciado interno */
+    background-color: rgb(53, 135, 135); /* Fondo azul claro */
+    color:  white; /* Texto blanco */
+    text-align: center; /* Centrar el texto */
+    font-size: 16px; /* Tamaño de letra */
+    cursor: pointer; /* Cambiar el cursor al pasar el ratón */
+    transition: background-color 0.3s ease; /* Animación al pasar el ratón */
+  }
+
+  .estiloCarrito:hover {
+    background-color: #26a69a; /* Cambiar el color de fondo al pasar el ratón */
+    color: white; /* Asegurarse de que el texto siga siendo visible */
+  }
+   /* FIN ESTILOS MAS Y MENOS Y ELIMINAR DEL CARRITO */
