@@ -122,7 +122,7 @@ document.querySelector("#carritoCompra").addEventListener("click", e => {
     const div = document.createElement('div');
     div.classList.add('row')
     div.setAttribute('data-codigo', art.codigo)
-    let agregarArticulo = `<span class="column col s2">${art.nombre}</span><span class="column col s2">${art.precio}</span><span class="column col s2">${art.cantidad}</span><span class="column col s2 restarArticulo">-</span><span class="column col s2 sumarArticulo">+</span></div><span class="column col s2 eliminarArticulo">-</span>`;
+    let agregarArticulo = `<span class="column col s2">${art.nombre}</span><span class="column col s2">${art.precio}</span><span class="column col s2">${art.cantidad}</span><span class="column col s2 restarArticulo estiloCarrito">-</span><span class="column col s2 sumarArticulo estiloCarrito">+</span><span class="column col s2 eliminarArticulo">Eliminar</span>`;
     div.innerHTML = agregarArticulo;
     containerArts.appendChild(div);
   })
