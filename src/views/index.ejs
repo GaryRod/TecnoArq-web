@@ -32,10 +32,15 @@
         <li><a href="#ServiciosLink">Servicio</a></li>
         <li><a href="#proyectosLink">Proyectos</a></li>
         <li><a href="#contactosLink">Contacto</a></li>
+        <li><a href="#contactosLink">Contacto</a></li>
+        <li class="shopping-cart-item">
+          <!-- <button data-target="modal1" class="btn modal-trigger shopping-cart-button">
+            <i class="fa-solid fa-cart-shopping"></i>
+          </button> -->
+          <a class="waves-effect waves-light btn modal-trigger" href="#modal1" id="carritoCompra">🛒</a>
+        </li>
       </ul>
-    </div>
-    <div>
-      <button data-target="modal1" class="btn modal-trigger"><i class="fa-solid fa-cart-shopping"></i></button>
+      
     </div>
   </nav>
   <!-- Mobil nav -->
@@ -45,6 +50,7 @@
     <li><a href="#proyectosLink">Proyectos</a></li>
     <li><a href="#ServiciosLink">Servicio</a></li> 
     <li><a href="#contactosLink">Contacto</a></li>
+
   </ul>
   <!-- Quienes somos -->
 
@@ -55,42 +61,51 @@
       </div>
   </div>  
 
-  <a class="waves-effect waves-light btn modal-trigger" href="#modal1" id="carritoCompra">Abrir Modal</a>
 
-          
-  <section id="containerProducts">
-    <% marcas.forEach(marca => { %>
-      <div class="row container">
-          <div class="col s12 m10 offset-m1" id="ServiciosLink">
-              <h3><%= marca.nombre %> <button class="button-desple" onclick="toggleCollapsible('collapsible-contentApp')">+</button></h3>
-              <div class="collapsible-contentApp">
-                <% articulos.filter(articulo => articulo.codigoMarca === marca.codigo).forEach(articulo => {%>
-                    <div class="row">
-                      <div class="column">
-                          <i class="fa fa-dot-circle-o" aria-hidden="true"></i><span> <%= articulo.nombre %> + Accesorios!</span>
-                      </div>
-                      <div class="column">
-                          <span>$<%= articulo.precio %><span class="espaciado"></span><%= articulo.precioUSD %>USD</span><a class="espaciado" href="https://api.whatsapp.com/send?phone=1128650088&text=Hola, quisiera informacion de <%= articulo.nombre %>!" target="_blank">
-                            Consultar stock
-                          </a>                 
-                      </div>
-                      <div class="column">           
-                        <button class="agregarArticulo" data-codigo='<%= articulo.codigo %>' data-nombre='<%= articulo.nombre %>' 
-                          data-precio='<%= articulo.precio %>' data-preciousd='<%= articulo.precioUSD %>'
-                        >+</button>
-                      </div>
-                    </div>
-                  <% }); %>
-                <div class="row">
-                  <div class="column">
-                      <i class="fa fa-dot-circle-o" aria-hidden="true"></i><span>Si desea solicitar uno de nuestros productos envíenos un mensaje al Whatsapp</span>
-                  </div>
-                </div>
-              </div>
+  <section id="containerProducts" class="container">
+    <ul class="collapsible">
+      <% marcas.forEach(marca => { %>
+        <li>
+          <!-- Encabezado colapsable -->
+          <div class="collapsible-header">
+            <span><%= marca.nombre %></span>
+            <i class="material-icons arrow-icon">▲</i> <!-- Ícono de flecha -->
           </div>
-      </div>  
-    <% }); %>  
+          <!-- Contenido colapsable -->
+          <div class="collapsible-body">
+            <ul>
+              <% articulos.filter(articulo => articulo.codigoMarca === marca.codigo).forEach(articulo => { %>
+                <li class="row center-align">
+                  <div class="col s12 m6">
+                    <i class="fa fa-dot-circle-o" aria-hidden="true"></i>
+                    <span><%= articulo.nombre %> + Accesorios!</span>
+                  </div>
+                  <div class="col s12 m6">
+                    <span>
+                      $<%= articulo.precio %>
+                      <span class="espaciado"></span>
+                      <%= articulo.precioUSD %> USD
+                    </span>
+                    <a class="espaciado" href="https://api.whatsapp.com/send?phone=1128650088&text=Hola, quisiera informacion de <%= articulo.nombre %>!" target="_blank">
+                      Consultar stock
+                    </a>
+
+                    <button class="btn agregarArticulo" 
+                    data-codigo='<%= articulo.codigo %>' 
+                    data-nombre='<%= articulo.nombre %>' 
+                    data-precio='<%= articulo.precio %>' 
+                    data-preciousd='<%= articulo.precioUSD %>'>+</button>
+                  
+                  </div>
+                </li>
+              <% }); %>
+            </ul>
+          </div>
+        </li>
+      <% }); %>
+    </ul>
   </section>
+
 
 
 
@@ -183,7 +198,7 @@
     <%- include('./partials/compraModal')  %> 
   <!-- Footer -->
   <footer class="page-footer black row" class="contactosLink" id="contactosLink" >
-    <div class="col m6 s12 center">
+    <div class="col m4 s12 center">
       <i class="fas fa-clock fa-2xl" style="color: #13aa45;"></i>
 
         <h6>Horario de Atención</h6>
@@ -192,13 +207,19 @@
         </h6>
         <h6>Sabados 10 a 14 hs</p>
     </div>
-    <div class="col m6 s12 center">
-      <i class="fa-brands fa-whatsapp fa-2xl" style="color: #13aa45;"></i>
-      <br><br>
-      <a href="https://api.whatsapp.com/send?phone=1128650088" target="_blank" class="color_number">1128650088</a>
-      <br>
-      <a href="https://api.whatsapp.com/send?phone=1128650088" target="_blank" class="color_number">1122518049</a>
-    </div>
+      <div class="col m4 s12 center">
+        <i class="fa-brands fa-whatsapp fa-2xl" style="color: #13aa45;"></i>
+        <br><br>
+        <a href="https://api.whatsapp.com/send?phone=1128650088" target="_blank" class="color_number" style="font-size: 19px;">1128650088</a>
+        <br>
+        <a href="https://api.whatsapp.com/send?phone=1128650088" target="_blank" class="color_number" style="font-size: 19px;">1122518049</a>
+      </div>
+
+      <div class="col m4 s12 center">
+        <i class="fa-brands fa-instagram fa-2xl" style="color: #E4405F;"></i>
+        <br><br>
+        <a href="https://www.instagram.com/fision_tech/" target="_blank" class="color_number" style="font-size: 19px;">Síguenos en Instagram</a>
+      </div>
 
     <div class="col s12 center">
       <p style="color: rgb(161, 161, 35);">Copyright 2024 © FISIONTECH | Todos los derechos reservados</p>   
