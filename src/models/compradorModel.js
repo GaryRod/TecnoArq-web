@@ -1,7 +1,7 @@
 import {connectToDatabase, sql} from '../database/sqlserver.js';
 
 class Comprador{
-    constructor(numeroComprador, nombreComprador, apellidoComprador, numeroDNI, email, calle, numeroCalle, localidad, provincia){
+    constructor(numeroComprador, nombreComprador, apellidoComprador, numeroDNI, email, calle, numeroCalle, localidad, provincia, numeroCelular){
         this.numeroComprador = numeroComprador;
         this.nombreComprador = nombreComprador;
         this.apellidoComprador = apellidoComprador;
@@ -11,9 +11,10 @@ class Comprador{
         this.numnumeroCalle =numeroCalle;
         this.localidad = localidad;
         this.provincia = provincia;
+        this.numeroCelular = numeroCelular;
     }
 
-    static async insert(transaction, numeroComprador, nombreComprador, apellidoComprador, numeroDNI, email, calle, numeroCalle, localidad, provincia){
+    static async insert(transaction, numeroComprador, nombreComprador, apellidoComprador, numeroDNI, email, calle, numeroCalle, localidad, provincia, numeroCelular){
         // const pool = await connectToDatabase();
         await transaction.request()
             .input('numeroComprador', sql.Int, numeroComprador)
@@ -25,7 +26,8 @@ class Comprador{
             .input('numeroCalle', sql.Decimal, numeroCalle)
             .input('localidad', sql.VarChar, localidad)
             .input('provincia', sql.VarChar, provincia)
-            .query('INSERT INTO COMPRADOR (NUMERO_COMPRADOR,NOMBRE_COMPRADOR,APELLIDO_COMPRADOR,NUMERO_DNI,EMAIL,CALLE,NUMERO_CALLE,LOCALIDAD,PROVINCIA) VALUES(@numeroComprador, @nombreComprador,@apellidoComprador,@numeroDNI,@email,@calle,@numeroCalle,@localidad,@provincia)');
+            .input('numeroCelular', sql.Decimal, numeroCelular)
+            .query('INSERT INTO COMPRADOR (NUMERO_COMPRADOR,NOMBRE_COMPRADOR,APELLIDO_COMPRADOR,NUMERO_DNI,EMAIL,CALLE,NUMERO_CALLE,LOCALIDAD,PROVINCIA, NUMERO_CELULAR) VALUES(@numeroComprador, @nombreComprador,@apellidoComprador,@numeroDNI,@email,@calle,@numeroCalle,@localidad,@provincia, @numeroCelular)');
         // await pool.close();
         return true;
     }

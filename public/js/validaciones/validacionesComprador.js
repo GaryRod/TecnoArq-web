@@ -1,6 +1,8 @@
 import validador from './validaciones.js';
 import enviarDatosCompra from './sendDataCompra.js';
+
 window.addEventListener("load", () => {
+    M.updateTextFields();
     let buttonSubmit = document.querySelector("#submit");
     let nombre = document.querySelector("#nombre");
     let apellido = document.querySelector("#apellido");
@@ -10,10 +12,68 @@ window.addEventListener("load", () => {
     let calle = document.querySelector("#calle");
     let numeroCalle = document.querySelector("#numeroCalle");
     let numeroDocumento = document.querySelector("#dni");
+    let numeroCelular = document.querySelector("#numeroCelular");
     let campoErrores = document.querySelector("#errores");
     let expEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{3,4})+$/;
 
-    // Inputmask({ mask: "(99.999.999" }).mask(document.querySelector("#dni"));
+
+
+    new Cleave('#dni', {
+        numericOnly: true,
+        blocks: [2,3,3]
+    });
+
+    new Cleave('#numeroCalle', {
+        numericOnly: true,
+        blocks: [10]
+    });
+
+    new Cleave('#dni', {
+        numericOnly: false,
+        blocks: [2,3,3]
+    });
+
+    new Cleave('#nombre', {
+        delimiter: '',
+        blocks: [50],
+        onValueChanged: function (e) {
+            const validText =  e.target.value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚüÜñÑ\s]/g, '');
+            this.element.value = validText;
+        }
+    });
+
+    new Cleave('#apellido', {
+        delimiter: '',
+        blocks: [50], 
+        onValueChanged: function (e) {
+            const validText = e.target.value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚüÜñÑ\s]/g, '');
+            this.element.value = validText;
+        }
+    });
+
+    new Cleave('#calle', {
+        delimiter: '',
+        blocks: [50], 
+        onValueChanged: function (e) {
+            const validText = e.target.value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚüÜñÑ\s]/g, '');
+            this.element.value = validText;
+        }
+    });
+
+    new Cleave('#localidad', {
+        delimiter: '',
+        blocks: [50], 
+        onValueChanged: function (e) {
+            const validText = e.target.value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚüÜñÑ\s]/g, '');
+            this.element.value = validText;
+        }
+    });
+
+    new Cleave('#numeroCelular', {
+        blocks: [2,4,4],
+        numericOnly: true
+    });
+
     validador.setCampoErrores(campoErrores)
     buttonSubmit.addEventListener("click", (event) => {
         validador.eliminarErrores();
@@ -26,16 +86,18 @@ window.addEventListener("load", () => {
                 errorProvincia: provinciaValidacion(),
                 errorCalle: calleValidacion(),
                 errorNumeroCalle: numeroCalleValidacion(),
-                errorNumeroDocumento: numeroDocumentoValidacion()
+                errorNumeroDocumento: numeroDocumentoValidacion(),
+                errorNumeroCelular: numeroCelularValidacion()
             }
-            if (hayErrores.errorEmail || hayErrores.errorApellido || hayErrores.errorNombre || hayErrores.errorProvincia 
-                || hayErrores.errorLocalidad || hayErrores.errorCalle || hayErrores.errorNumeroCalle || hayErrores.errorNumeroDocumentoumeroDocumento) {
+            if (hayErrores.errorEmail || hayErrores.errorApellido || hayErrores.errorNombre || hayErrores.errorProvincia || hayErrores.errorLocalidad || 
+                hayErrores.errorCalle || hayErrores.errorNumeroCalle || hayErrores.errorNumeroDocumentoumeroDocumento || hayErrores.errorNumeroCelular) {
                 event.preventDefault();
-                validador.concatenarErroresCamposVacios();
+                validador.enviarErroresCamposVacios();
+                validador.enviarErroresCamposInvalidos();
             }
             else{
                 validador.eliminarErrores();
-                enviarDatosCompra(event,nombre.value,apellido.value,email.value,provincia.value,localidad.value,calle.value,numeroCalle.value,numeroDocumento.value)
+                enviarDatosCompra(event,nombre.value,apellido.value,email.value,provincia.value,localidad.value,calle.value,numeroCalle.value,numeroDocumento.value, numeroCelular.value)
             }
         } catch (error) {
             let mensajeError = "Error inesperado: " + error;
@@ -47,6 +109,10 @@ window.addEventListener("load", () => {
    
     function nombreValidacion() {
         return validador.validarCampoVacio(nombre, 'nombre');
+    }
+
+    function numeroCelularValidacion() {
+        return validador.validarCampoVacio(numeroCelular, 'numero celular');
     }
 
     function apellidoValidacion() {
@@ -66,26 +132,15 @@ window.addEventListener("load", () => {
     }
 
     function numeroCalleValidacion() {
-        if (validador.validarCampoVacio(numeroCalle, 'numero de calle')){
-            return true;
-        }
-        else if (isNaN(numeroCalle.value)) {
-            let mensajeError = "Debe escribir numeros";
-            validador.crearMensajeError(mensajeError);
-            return true;
-        }
-        else {
-            return false;
-        }
+        return validador.validarCampoVacio(numeroCalle, 'numero de calle');
     }
 
     function numeroDocumentoValidacion() {
         if (validador.validarCampoVacio(numeroDocumento, 'DNI')){
             return true;
         }
-        else if (isNaN(numeroDocumento.value)) {
-            let mensajeError = "Debe escribir numeros";
-            validador.crearMensajeError(mensajeError);
+        else if (numeroDocumento.value.lenght < 8) {
+            validador.agregarCampoInvalido("DNI");
             return true;
         }
         else {
@@ -98,8 +153,20 @@ window.addEventListener("load", () => {
             return true;
         }
         else if (!expEmail.test(email.value)) {
-            let mensajeError = "Por favor, escribe un mail válido";
-            validador.crearMensajeError(mensajeError);
+            validador.agregarCampoInvalido("email");
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    function numeroCelularValidacion() {
+        if (validador.validarCampoVacio(numeroCelular, 'número de celular')) {
+            return true;
+        }
+        else if (!numeroCelular.value.startsWith('11') || numeroCelular.value.lenght < 8) {
+            validador.agregarCampoInvalido("numero celular");
             return true;
         }
         else {

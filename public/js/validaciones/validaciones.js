@@ -1,7 +1,9 @@
 const Validador = {
     camposVacios: [],
+    camposInvalidos: [],
     campoErrores: null,
-    mensajeErrorCabecera: "Por favor completa los siguientes campos: ",
+    mensajeErrorCabeceraCampoVacio: "Por favor completa los siguientes campos: ",
+    mensajeErrorCabeceraCampoInvalido: "Por favor complete con un formato válido los siguientes campos: ",
 
     setCampoErrores(campoErroresElement) {
         this.campoErrores = campoErroresElement;
@@ -16,18 +18,34 @@ const Validador = {
         }
     },
 
+    agregarCampoInvalido(datoIngresar){
+        this.camposInvalidos.push(datoIngresar)
+    },
+
     eliminarErrores() {
-        this.camposVacios = [];
         if (this.campoErrores) {
             this.campoErrores.innerHTML = "";
+            this.camposInvalidos = [];
+            this.camposVacios = [];
         }
     },
 
-    concatenarErroresCamposVacios() {
-        if (this.campoErrores) {
-            const mensajeError = this.mensajeErrorCabecera + this.camposVacios.join(", ");
+    enviarErroresCamposVacios() {
+        if (this.campoErrores && this.camposVacios.length > 0) {
+            const mensajeError = this.concatenarErrores(this.mensajeErrorCabeceraCampoVacio, this.camposVacios);
             this.crearMensajeError(mensajeError);
         }
+    },
+
+    enviarErroresCamposInvalidos() {
+        if (this.campoErrores && this.camposInvalidos.length > 0) {
+            const mensajeError = this.concatenarErrores(this.mensajeErrorCabeceraCampoInvalido, this.camposInvalidos);
+            this.crearMensajeError(mensajeError);
+        }
+    },
+
+    concatenarErrores(mensajeCabecera, camposAConcatenar){
+        return mensajeCabecera + camposAConcatenar.join(", ");
     },
 
     crearMensajeError(mensajeError) {

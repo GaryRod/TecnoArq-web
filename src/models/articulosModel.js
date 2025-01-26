@@ -22,15 +22,19 @@ class Articulo{
 
     static async getAll(transaction) {
         try {
-            // const pool = await connectToDatabase();
+            const formato = new Intl.NumberFormat('es-AR', {
+                style: 'decimal',
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 2
+              });
             const resultsBD = await transaction.request()
                 .query('SELECT CODIGO_ARTICULO as codigo, NOMBRE_ARTICULO as nombre, CODIGO_MARCA_FK as codigoMarca, PRECIO as precio, PRECIO_USD as precioUSD FROM ARTICULOS');
             const results = resultsBD.recordset.map(art => new Articulo(
                 art.codigo,
                 art.nombre,
                 art.codigoMarca,
-                art.precio,
-                art.precioUSD
+                formato.format(art.precio),
+                formato.format(art.precioUSD)
             ));
             // await pool.close();
             return results;

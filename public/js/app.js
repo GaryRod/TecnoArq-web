@@ -12,8 +12,11 @@ $(document).ready(function() {
   const prev = document.querySelector('#prev')
   const finalizaCompra = document.querySelector('#finalizaCompra')
   next.addEventListener('click', e => {
-    step1.classList.add('hide');
-    step2.classList.remove('hide');
+    let carrito = JSON.parse(localStorage.getItem("carrito")) || [];
+    if (carrito.length > 0) {
+      step1.classList.add('hide');
+      step2.classList.remove('hide');
+    }
   })
   prev.addEventListener('click', e => {
     step1.classList.remove('hide');
