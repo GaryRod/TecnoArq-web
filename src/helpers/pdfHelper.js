@@ -24,7 +24,7 @@ const generarPDFConTablaAsync = async (dataArticulos, datosComprador, callback) 
         doc.on('error', (err) => callback(err)); // Llamar al callback en caso de error
         
         doc.image('./public/images/Fision-tech.png', 540, 5, {scale: 0.20})
-        doc.fontSize(14).font("Helvetica-Bold").text("Datos de Compra", { align:  "left" });
+        doc.fontSize(14).font("Helvetica-Bold").text("Datos de generales", { align:  "left" });
       
         doc.fontSize(9).font("Helvetica");
           
