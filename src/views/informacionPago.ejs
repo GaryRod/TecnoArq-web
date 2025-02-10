@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="css/main.css">
+  <link href="https://fonts.googleapis.com/css?family=Cambay|Pacifico" rel="stylesheet">
+  <!-- Compiled and minified CSS -->
+  <link type="text/css" rel="stylesheet" href="css/materialize.min.css"  media="screen,projection"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" />
+  <title>FisionTech</title>
+  <link rel="icon" href="/images/Fision-tech.png">
+  <!-- <link rel="icon" href="/icon/whatsapp.png"> -->
+  <script src="https://kit.fontawesome.com/bb9a20c193.js" crossorigin="anonymous"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+</head>
+
+<body>
+  <!-- Desktop Nav-->
+  <nav>
+    <div class="nav-wrapper black" id="homeLink">
+      <a href="#!" class="brand-logo"><img  width="100px" height="64px" src="/images/Fision-tech.png" alt=""></a>
+      <a href="#" data-target="mobile-demo" class="sidenav-trigger">      <i class="fa fa-bars" aria-hidden="true"></i></a>
+      <!-- <h4 class="">TECNO ARQ</h4> -->
+      <ul class="right hide-on-med-and-down">
+        <li><a href="#homeLink">Home</a></li>
+        <li><a href="#nosotrosLink">Quienes somos</a></li>
+        <li><a href="#ServiciosLink">Servicio</a></li>
+        <li><a href="#proyectosLink">Proyectos</a></li>
+        <li><a href="#contactosLink">Contacto</a></li>
+        <li><a href="#contactosLink">Contacto</a></li>
+        <li class="shopping-cart-item">
+          <!-- <button data-target="modal1" class="btn modal-trigger shopping-cart-button">
+            <i class="fa-solid fa-cart-shopping"></i>
+          </button> -->
+          <a class="waves-effect waves-light btn modal-trigger" href="#modal1" id="carritoCompra">🛒</a>
+        </li>
+      </ul>
+      
+    </div>
+  </nav>
+  <!-- Mobil nav -->
+  <ul class="sidenav" id="mobile-demo">
+    <!-- <li><a href="home.html">Home</a></li> -->
+    <li><a href="#nosotrosLink">Quienes somos</a></li>
+    <li><a href="#proyectosLink">Proyectos</a></li>
+    <li><a href="#ServiciosLink">Servicio</a></li> 
+    <li><a href="#contactosLink">Contacto</a></li>
+
+  </ul>
+  <!-- Quienes somos -->
+  <img src="/images/Fision-tech.png" alt=""></a>
+  <% if (pagoRealizado === true) { %>
+        <div>Su pago se proceso con exito, se le enviara un mail con su comprobante</div>
+  <% }else {%>
+        <div>Su pago no se realizo o quedo pendinete de envio, en cuanto se procese correctamente se enviara un mail con su comprobante</div>
+  <% } %>
+  <!-- Footer -->
+  <footer class="page-footer black row" class="contactosLink" id="contactosLink" >
+    <div class="col m4 s12 center">
+      <i class="fas fa-clock fa-2xl" style="color: #13aa45;"></i>
+
+        <h6>Horario de Atención</h6>
+        <h6>
+            Lunes a Viernes<br/>10 a 14hs y 15 a 19hs
+        </h6>
+        <h6>Sabados 10 a 14 hs</p>
+    </div>
+      <div class="col m4 s12 center">
+        <i class="fa-brands fa-whatsapp fa-2xl" style="color: #13aa45;"></i>
+        <br><br>
+        <a href="https://api.whatsapp.com/send?phone=1128650088" target="_blank" class="color_number" style="font-size: 19px;">1128650088</a>
+        <br>
+        <a href="https://api.whatsapp.com/send?phone=1128650088" target="_blank" class="color_number" style="font-size: 19px;">1122518049</a>
+      </div>
+
+      <div class="col m4 s12 center">
+        <i class="fa-brands fa-instagram fa-2xl" style="color: #E4405F;"></i>
+        <br><br>
+        <a href="https://www.instagram.com/fision_tech/" target="_blank" class="color_number" style="font-size: 19px;">Síguenos en Instagram</a>
+      </div>
+
+    <div class="col s12 center">
+      <p style="color: rgb(161, 161, 35);">Copyright 2024 © FISIONTECH | Todos los derechos reservados</p>   
+    </div>
+
+  </footer>
+
+
+
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+  <!-- Compiled and minified JavaScript -->
+  <script type="text/javascript" src="js/materialize.min.js"></script>
+  </script>
+</body>
+
+</html>

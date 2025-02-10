@@ -1,36 +1,26 @@
 import express from'express';
 const router = express.Router();
-// Solicito todas las funcionalidades del productController
 import authMiddleware from'../middlewares/authMiddleware.js';
+import userLoggedMiddleware from'../middlewares/userLoggedMiddleware.js';
+import userValidatorMiddleware from'../middlewares/userValidatorMiddleware.js';
 import adminController from'../controllers/adminController.js';
 
-router.get('/login', (req, res) => {
-  res.send(`
-    <form action="/login" method="POST">
-      <label for="username">Usuario:</label>
-      <input type="text" id="username" name="username">
-      <label for="password">Contraseña:</label>
-      <input type="password" id="password" name="password">
-      <button type="submit">Ingresar</button>
-    </form>
-  `);
-});
+router.get('/', userLoggedMiddleware, adminController.login);
 
-router.post('/login', (req, res) => {
-  const { username, password } = req.body;
-  
-  // Validamos las credenciales (ejemplo simple, puedes mejorar esto)
-  if (username === 'admin' && password === '1234') {
-    // Creamos una cookie para simular una sesión
-    res.cookie('auth', 'true', { httpOnly: true, maxAge: 3600000 }); // 1 hora de duración
-    res.redirect('/admin');
-  } else {
-    res.send('Credenciales incorrectas');
-  }
-});
-// /* Con readAll - LISTADO DE PRODUCTOS, RENDERIZA CATALOGO DE PRODUCTOS*/
-router.get('/', authMiddleware, adminController.dashboard);
-// // router.get('/support', productController.support);
-router.get('/logout', adminController.logout);
+router.get('/dashboard', authMiddleware, adminController.dashboard);
+
+router.post('/', userValidatorMiddleware, adminController.loginUser);
+
+router.get('/logout', authMiddleware, adminController.logout);
+
+router.post('/actualizarArticulo', adminController.updateArticulo);
+
+router.post('/crearArticulo', adminController.createArticulo);
+
+router.post('/eliminarArticulo', adminController.deleteArticulo);
+
+router.post('/crearMarca', adminController.createMarca);
+
+router.post('/updateMarca', adminController.updateMarca);
 
 export default router

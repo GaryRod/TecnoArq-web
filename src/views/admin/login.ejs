@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link type="text/css" rel="stylesheet" href="css/main.css"  media="screen,projection"/>
+  <title>FisionTech</title>
+</head>
+
+<form action="admin" method="POST">
+    <label for="username">Usuario:</label>
+    <input type="text" id="username" name="username">
+    <label for="password">Contraseña:</label>
+    <input type="password" id="password" name="password">
+    <button type="submit">Ingresar</button>
+</form>
+<% if(locals.errors && errors.invalid){ %> 
+    <div class="redtext">
+        <%= errors.invalid.msg %> 
+    </div>
+<% } %>
+<% if(locals.errors && errors.username){ %> 
+    <div class="redtext">
+        <%= errors.username.msg %> 
+    </div>
+<% } %>
+<% if(locals.errors && errors.password){ %> 
+    <div class="redtext">
+        <%= errors.password.msg %> 
+    </div>
+<% } %>
+  

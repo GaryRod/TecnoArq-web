@@ -2,7 +2,7 @@ import nodemailer from 'nodemailer'
 import generarPDFConTablaAsync from './pdfHelper.js'
 
 const emailHelper = async (body) => {
-    const datosArticulos = body.carrito.map(art => ({articulo: art.nombre, cantidad: art.cantidad, precio: art.precio.replace(".","").replace(",","."), subtotal: art.precio.replace(".","").replace(",",".")*art.cantidad}));
+    const datosArticulos = body.carrito.map(art => ({articulo: art.title, cantidad: art.quantity, precio: art.unit_price, subtotal: art.unit_price * art.quantity}));
 
     const datosComprador = {
         nombre: body.nombre,
@@ -13,21 +13,23 @@ const emailHelper = async (body) => {
         localidad: body.localidad,
         calle: body.calle,
         numeroCalle: body.numeroCalle,
-        numeroCelular: body.numeroCelular
+        numeroCelular: body.numeroCelular,
+        codigoPostal: body.codigoPostal,
+        datosAdicionales: body.datosAdicionales
     }
-    
+
     const pdfBuffer = await new Promise((resolve, reject) => {
         generarPDFConTablaAsync(datosArticulos, datosComprador,(err, buffer) => {
             if (err) {
-              reject(err); // Rechazar la promesa si ocurre un error
+              reject(err);
             } else {
-              resolve(buffer); // Resolver la promesa con el buffer del PDF
+              resolve(buffer);
             }
         });
     });
 
-    const userGmail = "hablameaqui360@gmail.com";
-    const passAppGmail = "mcol zuqu bfkn yaad";
+    const userGmail = process.env.EMAIL;
+    const passAppGmail = process.env.EMAIL_PASSWORD;
     let transporter = nodemailer.createTransport({
         service: "gmail",
         auth: {
@@ -45,16 +47,14 @@ const emailHelper = async (body) => {
         attachments: [
             {
                 filename: 'comprobante.pdf',
-                content: pdfBuffer, // Usar el buffer generado del PDF
+                content: pdfBuffer,
             },
         ],
     };
 
     try {
         let info = await transporter.sendMail(mailOptions);
-        console.log("Email sent: " + info.response);
         return info.response.includes("OK");
-            
     } catch (error) {
         console.error("Error sending email:", error);
         return false;

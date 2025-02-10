@@ -31,23 +31,11 @@ $(document).ready(function() {
   })
 })
 
-function toggleCollapsible(collapsibleClass) {
-  var allContents = document.querySelectorAll('.collapsible-content, .collapsible-contentXia, .collapsible-contentApp, .collapsible-contentMot, .collapsible-content_rrr, .collapsible-contentAuricular');
-  var contentToToggle = document.querySelector(`.${collapsibleClass}`);
-  
-  allContents.forEach(function(content) {
-    if (content !== contentToToggle) {
-      content.style.display = "none";
-    }
-  });
-
-  if (contentToToggle.style.display === "none" || contentToToggle.style.display === "") {
-    contentToToggle.style.display = "block";
-  } else {
-    contentToToggle.style.display = "none";
-  }
-}
-
+const formato = new Intl.NumberFormat('es-AR', {
+  style: 'decimal',
+  minimumFractionDigits: 0,
+  maximumFractionDigits: 2
+});
 
 document.querySelector("#containerProducts").addEventListener('click', e => {
   if (e.target.classList.contains('agregarArticulo')) {
@@ -57,6 +45,9 @@ document.querySelector("#containerProducts").addEventListener('click', e => {
       carrito.forEach(art => {
         if (art.codigo === product.codigo) {
           art.cantidad++;
+          const precioUnitario = Number(product.precio.replaceAll(".","").replace(",","."));
+          const precioActualizado = Math.round((precioUnitario * art.cantidad) * 100) / 100;;
+          art.precio = formato.format(precioActualizado);
         }
       })
       localStorage.setItem("carrito", JSON.stringify(carrito))
@@ -66,6 +57,7 @@ document.querySelector("#containerProducts").addEventListener('click', e => {
         codigo: product.codigo,
         nombre: product.nombre,
         precio: product.precio,
+        precioUnitario: product.precio,
         preciousd: product.preciousd,
         cantidad: 1
       }
@@ -80,26 +72,45 @@ document.querySelector("#containerArtsCarrito").addEventListener('click', e => {
   let limpiarStorage = false;
   const elementoActual = e.target;
   const product = elementoActual.parentElement.dataset;
+  const rowCarrito = elementoActual.closest(".rowCarrito");
   let carrito = JSON.parse(localStorage.getItem("carrito")) || [];
+  const cantidadArticulo = rowCarrito.querySelector(".cantidadCarrito");
+  let precioArticulo = rowCarrito.querySelector(".precioCarrito");
+  let precioUnitarioArticulo = precioArticulo.getAttribute("data-precioUnitario");
   if (elementoActual.classList.contains('sumarArticulo')) {
+    let cantidadActualizada = Number(cantidadArticulo.textContent) + 1
+    precioUnitarioArticulo = Number(precioUnitarioArticulo.replaceAll(".","").replace(",","."))
+    let precioActualizado = Math.round((precioUnitarioArticulo * cantidadActualizada) * 100) / 100
+    cantidadArticulo.textContent = cantidadActualizada;
+    precioArticulo.textContent = "$" + formato.format(precioActualizado);
+    limpiarStorage = true;
     carrito.forEach(art => {
       if (art.codigo === product.codigo) {
-        art.cantidad++;
+        art.cantidad = cantidadActualizada;
+        art.precio = formato.format(precioActualizado);
       }
     })
-    const cantidadArticulo = elementoActual.previousSibling.previousSibling;
-    cantidadArticulo.textContent = Number(cantidadArticulo.textContent) + 1;
-    limpiarStorage = true;
   } 
   else if (e.target.classList.contains('restarArticulo')){
-    carrito.forEach(art => {
-      if (art.codigo === product.codigo) {
-        art.cantidad--;
-      }
-    })
-    const cantidadArticulo = elementoActual.previousSibling;
-    cantidadArticulo.textContent = Number(cantidadArticulo.textContent) - 1;
+    let cantidadActualizada = Number(cantidadArticulo.textContent) - 1;
+    precioUnitarioArticulo = Number(precioUnitarioArticulo.replaceAll(".","").replace(",","."));
+    let precioActualizado = Math.round((precioUnitarioArticulo * cantidadActualizada) * 100) / 100;
     limpiarStorage = true;
+    if (cantidadActualizada > 0) {    
+      cantidadArticulo.textContent = cantidadActualizada;
+      precioArticulo.textContent = "$" + formato.format(precioActualizado);
+      carrito.forEach(art => {
+        if (art.codigo === product.codigo) {
+          art.cantidad = cantidadActualizada;
+          art.precio = formato.format(precioActualizado);
+        }
+      })
+    } else {
+      const product = elementoActual.parentElement.dataset;
+      let indice = carrito.findIndex(art => art.codigo === product.codigo);
+      carrito.pop(indice);
+      elementoActual.parentElement.parentElement.removeChild(elementoActual.parentElement)
+    }
   }
   else if (elementoActual.classList.contains('eliminarArticulo')){
     const product = elementoActual.parentElement.dataset;
@@ -120,9 +131,15 @@ document.querySelector("#carritoCompra").addEventListener("click", e => {
   let carrito = JSON.parse(localStorage.getItem("carrito")) || [];
   carrito.forEach(art => {
     const div = document.createElement('div');
+    div.classList.add('rowCarrito')
     div.classList.add('row')
     div.setAttribute('data-codigo', art.codigo)
-    let agregarArticulo = `<span class="column col s2">${art.nombre}</span><span class="column col s2">${art.precio}</span><span class="column col s2">${art.cantidad}</span><span class="column col s2 restarArticulo estiloCarrito">-</span><span class="column col s2 sumarArticulo estiloCarrito">+</span><span class="column col s2 eliminarArticulo">Eliminar</span>`;
+    let agregarArticulo = `<span class="column col s2 nombreCarrito">${art.nombre}</span>
+                          <span class="column col s2 precioCarrito" data-precioUnitario="${art.precioUnitario}">$${art.precio}</span>
+                          <span class="column col s2 cantidadCarrito">${art.cantidad}</span>
+                          <span class="column col s2 restarArticulo estiloCarrito">-</span>
+                          <span class="column col s2 sumarArticulo estiloCarrito">+</span>
+                          <span class="column col s2 eliminarArticulo">Eliminar</span>`;
     div.innerHTML = agregarArticulo;
     containerArts.appendChild(div);
   })
@@ -143,8 +160,9 @@ function limpiarCarrito(limpiarHTML){
 
   // Inicialización de Materialize para collapsibles
   document.addEventListener('DOMContentLoaded', function() {
-    const elems = document.querySelectorAll('.collapsible');
+    const elems = document.querySelectorAll('.collapsible.expandable');
     const instances = M.Collapsible.init(elems, {
+      accordion: false,
       onOpenStart: function(el) {
         const arrow = el.querySelector('.arrow-icon');
         if (arrow) arrow.classList.add('rotate'); // Añade la clase rotate

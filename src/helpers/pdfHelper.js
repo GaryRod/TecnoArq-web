@@ -36,6 +36,9 @@ const generarPDFConTablaAsync = async (dataArticulos, datosComprador, callback) 
         doc.text(`Localidad: ${datosComprador.localidad}`, { lineGap: 6 });
         doc.text(`Calle: ${datosComprador.calle}`, { lineGap: 6 });
         doc.text(`Número calle: ${datosComprador.numeroCalle}`, { lineGap: 6 });
+        doc.text(`Codigo postal: ${datosComprador.codigoPostal}`, { lineGap: 6 });
+        if (datosComprador.datosAdicionales)
+            doc.text(`Datos adicionales: ${datosComprador.datosAdicionales}`, { lineGap: 6 });
         doc.text(`Número celular: ${datosComprador.numeroCelular}`, { lineGap: 20 });
         
         doc.fontSize(14).font("Helvetica-Bold").text("Detalle compra", { align: "left" });
