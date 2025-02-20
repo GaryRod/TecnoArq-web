@@ -1,35 +1,63 @@
 import {connectToDatabase, sql} from '../database/sqlserver.js';
 
 class Marca{
-    constructor(codigo, nombre){
+    constructor(codigo, nombre, utilizable){
         this.codigo = codigo;
         this.nombre = nombre;
+        this.utilizable = utilizable;
     }
 
-    static async findById(id){
-        const pool = await connectToDatabase();
-        const resultsBD = await pool.request()
-            .input('id', sql.VarChar, id)
-            .query('SELECT CODIGO_MARCA as codigo, NOMBRE_MARCA as nombre FROM MARCAS WHERE CODIGO_MARCA = @id');
-        const  results = new Marca(resultsBD.recordset[0].codigo, resultsBD.recordset[0].nombre);
-            await pool.close();
-            return results;
-    }
-
-    static async getAll(transaction) {
+    static async findById(connection, codigo){
         try {
-            // const pool = await connectToDatabase();
-            const resultsBD = await transaction.request()
-                .query('SELECT CODIGO_MARCA as codigo, NOMBRE_MARCA as nombre FROM MARCAS'); // Cambia 'Users' por tu tabla
-            const results = resultsBD.recordset.map(art => new Marca(
-                art.codigo,
-                art.nombre
+            const [resultsDB] = await connection.query('SELECT CODIGO_MARCA as codigo, NOMBRE_MARCA as nombre, UTILIZABLE as utilizable FROM MARCAS WHERE CODIGO_MARCA = ?', [codigo]);
+            let result = resultsDB[0];
+            if (result) {
+                result = new Marca(result.codigo, result.nombre, result.utilizable);
+            }
+            return result;
+        } catch (error) {
+            throw new Error('Error al obtener marca')
+        }
+    }
+
+    static async getAll(connection) {
+        try {
+            const [resultsDB] = await connection.query('SELECT CODIGO_MARCA as codigo, NOMBRE_MARCA as nombre, UTILIZABLE as utilizable  FROM MARCAS');
+            const results = resultsDB.map(marca => new Marca(
+                marca.codigo,
+                marca.nombre,
+                marca.utilizable === 1
             ));
-            // await pool.close();
             return results;
         } catch (error) {
-            console.error('Error al obtener articulos:', error);
-            res.status(500).send('Error al obtener usuarios');
+            throw new Error('Error al obtener marcas')
+        }
+    }
+
+    static async insert(connection, codigo, nombre, utilizable) {
+        try {
+            const [result]= await connection.execute('INSERT INTO MARCAS (CODIGO_MARCA, NOMBRE_MARCA, UTILIZABLE) VALUES (?,?,?)', [codigo, nombre, utilizable]);
+            return result;
+        } catch (error) {
+            throw new Error('Error al insertar marca')
+        }
+    }
+
+    static async update(connection, codigo, nombre, utilizable) {
+        try {
+            const [result]= await connection.execute('UPDATE MARCAS SET NOMBRE_MARCA = ?, UTILIZABLE = ? WHERE CODIGO_MARCA = ?', [nombre, utilizable, codigo]);
+            return result;
+        } catch (error) {
+            throw new Error('Error al actualizar marca')
+        }
+    }
+
+    static async delete(connection, codigo) {
+        try {
+            const [result]= await connection.execute('DELETE FROM MARCAS WHERE CODIGO_MARCA = ?', [codigo]);
+            return result;
+        } catch (error) {
+            throw new Error('Error al eliminar marca')
         }
     }
 }

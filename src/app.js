@@ -1,5 +1,6 @@
-import express  from"express";
+import express  from "express";
 const app = express();
+import cors from "cors"
 import path  from'path';
 import { fileURLToPath } from 'url';
 import session  from'express-session';
@@ -7,10 +8,12 @@ import cookieParser from'cookie-parser';
 
 import mainRoutes  from './routes/mainRoutes.js';
 import adminRoutes  from './routes/adminRoutes.js';
-// const userRoutes  from'./routes/userRoutes')
-// const userLoggedMiddleware  from'./middlewares/userLoggedMiddleware')
+// import userLoggedMiddleware from './middlewares/userLoggedMiddleware.js';
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+
+app.use(cors());
 // Sessiones y Cookies
 app.use(session({
     secret: "No deberías estar leyendo esto!",

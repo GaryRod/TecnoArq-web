@@ -1,4 +1,5 @@
-export default function enviarDatosCompra(event, nombre, apellido, email, provincia, localidad, calle, numeroCalle, numeroDocumento, numeroCelular) {
+export default function enviarDatosCompra(event, nombre, apellido, email, provincia, localidad, calle, numeroCalle, numeroDocumento, numeroCelular, codigoPostal, datosAdicionales) {
+    event.target.disabled = true;
     event.preventDefault();
     let carrito = JSON.parse(localStorage.getItem("carrito"));
     const datosFormulario = {};
@@ -11,6 +12,8 @@ export default function enviarDatosCompra(event, nombre, apellido, email, provin
     datosFormulario.numeroCalle = numeroCalle;
     datosFormulario.numeroDocumento = numeroDocumento;
     datosFormulario.numeroCelular = numeroCelular;
+    datosFormulario.codigoPostal = codigoPostal;
+    datosFormulario.datosAdicionales = datosAdicionales;
     datosFormulario.carrito = carrito;
     fetch('/comprar', {
       method: 'POST',
@@ -21,11 +24,13 @@ export default function enviarDatosCompra(event, nombre, apellido, email, provin
     })
       .then(response => response.text())
       .then(data => {
-        console.log(data)
-        const step2 = document.querySelector('#step2')
-        const step3 = document.querySelector('#step3')
-        step2.classList.add('hide');
-        step3.classList.remove('hide');
+        data = JSON.parse(data);
+        let popup = window.open(data.url, "MercadoPago", "width=1200,height=800");
+        if (!popup || popup.closed || typeof popup.closed == "undefined") {
+            alert("Por favor, habilita las ventanas emergentes para continuar con el pago.");
+            return;
+        }
+        event.target.disabled = false;
       })
       .catch(error => console.error('Error:', error));
 }

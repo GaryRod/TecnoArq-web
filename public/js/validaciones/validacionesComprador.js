@@ -13,6 +13,8 @@ window.addEventListener("load", () => {
     let numeroCalle = document.querySelector("#numeroCalle");
     let numeroDocumento = document.querySelector("#dni");
     let numeroCelular = document.querySelector("#numeroCelular");
+    let codigoPostal = document.querySelector("#codigoPostal");
+    let datosAdicionales = document.querySelector("#datosAdicionales");
     let campoErrores = document.querySelector("#errores");
     let expEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{3,4})+$/;
 
@@ -74,8 +76,21 @@ window.addEventListener("load", () => {
         numericOnly: true
     });
 
+    new Cleave('#codigoPostal', {
+        blocks: [4],
+        numericOnly: true
+    });
+
+    new Cleave('#datosAdicionales', {
+        delimiter: '',
+        blocks: [150]
+    });
+
     validador.setCampoErrores(campoErrores)
     buttonSubmit.addEventListener("click", (event) => {
+        const mp = new MercadoPago('APP_USR-5f006dc9-e0a3-47c3-88d5-9696dcfc0dfe', {
+            locale: 'es-AR'
+          });
         validador.eliminarErrores();
         try {
             let hayErrores = {
@@ -87,17 +102,18 @@ window.addEventListener("load", () => {
                 errorCalle: calleValidacion(),
                 errorNumeroCalle: numeroCalleValidacion(),
                 errorNumeroDocumento: numeroDocumentoValidacion(),
-                errorNumeroCelular: numeroCelularValidacion()
+                errorNumeroCelular: numeroCelularValidacion(),
+                errorCodigoPostal: codigoPostalValidacion()
             }
             if (hayErrores.errorEmail || hayErrores.errorApellido || hayErrores.errorNombre || hayErrores.errorProvincia || hayErrores.errorLocalidad || 
-                hayErrores.errorCalle || hayErrores.errorNumeroCalle || hayErrores.errorNumeroDocumentoumeroDocumento || hayErrores.errorNumeroCelular) {
+                hayErrores.errorCalle || hayErrores.errorNumeroCalle || hayErrores.errorNumeroDocumentoumeroDocumento || hayErrores.errorNumeroCelular || hayErrores.errorCodigoPostal) {
                 event.preventDefault();
                 validador.enviarErroresCamposVacios();
                 validador.enviarErroresCamposInvalidos();
             }
             else{
                 validador.eliminarErrores();
-                enviarDatosCompra(event,nombre.value,apellido.value,email.value,provincia.value,localidad.value,calle.value,numeroCalle.value,numeroDocumento.value, numeroCelular.value)
+                enviarDatosCompra(event,nombre.value,apellido.value,email.value,provincia.value,localidad.value,calle.value,numeroCalle.value,numeroDocumento.value, numeroCelular.value, codigoPostal.value, datosAdicionales.value)
             }
         } catch (error) {
             let mensajeError = "Error inesperado: " + error;
@@ -106,7 +122,7 @@ window.addEventListener("load", () => {
         }
     })
 
-   
+    
     function nombreValidacion() {
         return validador.validarCampoVacio(nombre, 'nombre');
     }
@@ -133,6 +149,10 @@ window.addEventListener("load", () => {
 
     function numeroCalleValidacion() {
         return validador.validarCampoVacio(numeroCalle, 'numero de calle');
+    }
+
+    function codigoPostalValidacion() {
+        return validador.validarCampoVacio(codigoPostal, 'codigo postal');
     }
 
     function numeroDocumentoValidacion() {

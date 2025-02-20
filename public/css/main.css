@@ -13,6 +13,9 @@ nav div a h4 {
   color: #edcd1f;
 }
 
+.redtext {
+  color: red;
+}
 .back1, .back2, .back5 {
 height: 1vh;
 width: 100vh;
@@ -313,7 +316,19 @@ div.carousel {
   transition: opacity 0.3s ease;
 }
 
+li.row {
+  display: flex;
+  align-items: center;
+  flex-wrap: nowrap; /* Evita que los elementos salten de línea */
+}
 
+.espaciado2 {
+  margin: 0 10px;
+}
+
+button.agregarArticulo {
+  padding: 5px 10px;
+}
   /* .collapsible-header {
     display: flex;
     justify-content: center; /* Centrar horizontalmente */
@@ -334,6 +349,10 @@ div.carousel {
   .collapsible-header span {
     flex: 1; /* Hace que el texto ocupe todo el espacio disponible */
     text-align: center; /* Centra el texto horizontalmente */
+  }
+
+  .collapsible-header i{
+    margin-right: 0px !important;
   }
 
   .arrow-icon {
@@ -372,3 +391,164 @@ div.carousel {
     color: white; /* Asegurarse de que el texto siga siendo visible */
   }
    /* FIN ESTILOS MAS Y MENOS Y ELIMINAR DEL CARRITO */
+
+  .marginButtonSave{
+    margin-bottom: 0px !important;
+  }
+
+  .marginButtonDelete{
+    margin-left: 22px !important;
+  }
+ @media only screen and (max-width: 700px) {
+  .container{
+    padding: 0px !important;
+    width: 100% !important;
+  }
+
+  .marginButtonSave{
+    margin-bottom: 6px !important;
+  }
+
+  .marginButtonDelete{
+    margin-left: 0px !important;
+  }
+
+  .collapsible-body{
+    padding: 0px !important;
+  }
+}
+
+@media (max-width: 700px) {
+  .btn-small {
+    height: 28px !important;
+    line-height: 28px !important;
+    font-size: 10px !important;
+  }
+
+  .btn-small i {
+    font-size: 14px;
+  }
+
+  .modal{
+    margin: 0px !important;
+    width: 100% !important;
+  }
+
+  .modal-content{
+    padding: 5px !important;
+  }
+
+  h4{
+    font-size: 12px;
+  }
+
+  #containerArtsCarrito.row, modal-footer.row{
+    margin-bottom: 5px !important;
+  }
+}
+
+.rowCarrito {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 10px;
+}
+
+
+.detallesCarrito {
+  display: flex;
+  align-items: center;
+  flex: 2;
+}
+
+
+.nombreCarrito {
+  flex: 2;
+  font-weight: bold;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: inline-block;
+}
+
+.precioCarrito {
+  flex: 0.5;
+}
+
+.cantidadCarrito {
+  flex: 0.5;
+  text-align: center;
+}
+
+
+
+@media (max-width: 700px) {
+  .rowCarrito {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .detallesCarrito {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+}
+
+.accionesCarrito {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  justify-content: flex-start;
+  flex-wrap: nowrap;
+  width: auto;
+}
+
+
+.accionesCarrito span,
+.accionesCarrito button {
+  width: 40px;
+  height: 35px;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+
+@media (max-width: 700px) {
+  .accionesCarrito {
+    display: flex !important;
+    justify-content: flex-start !important;
+    width: auto !important;
+    flex-wrap: nowrap !important;
+  }
+
+  .accionesCarrito span,
+  .accionesCarrito button {
+    width: 25px !important;
+    height: 25px !important;
+  }
+  
+  .btn-floating.btn-small i {
+    line-height: 25px !important;
+  }
+
+  .btn-floating i {
+    width: initial !important;
+  }
+}
+
+.btn-small .material-icons{
+  line-height: 32.4px !important;
+}
+
+.cabeceraModal{
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: inline-block;
+}

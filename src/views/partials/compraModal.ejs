@@ -1,14 +1,22 @@
-<div id="modal1" class="modal">
+<div id="modalCompra" class="modal">
     <div class="modal-content">
+      <div id="wallet_container"></div>
+
     <!-- Step 1 -->
       <div class="step" id="step1">
         <h4>Articulos</h4>
         <div class="row" id="containerArtsCarrito">
         </div>
-        <div class="modal-footer">
-          <a href="#!" class="modal-close waves-effect waves-green btn-flat">Cerrar</a>
-          <a href="#!" id="limpiarCarrito" class="waves-effect waves-green btn-flat">Limpiar carrito</a>
-          <a href="#!" id="next" class="waves-effect waves-green btn-flat">Continuar</a>
+        <div class="modal-footer row">
+            <a href="#!" id="cerrar" class="modal-close waves-effect waves-green btn-small">
+              Cerrar
+            </a>
+            <a href="#!" id="limpiarCarrito" class="waves-effect waves-green btn-small">
+              Limpiar carrito
+            </a>
+            <a href="#!" id="next" class="waves-effect waves-green btn-small">
+              Continuar
+            </a>
       </div>
       </div>
     <!-- Step 2 -->
@@ -21,12 +29,12 @@
           </div>
           <div class="row">
             <div class="input-field column col row">
-              <label for="nombre" class="select-label">Nombre</label>
+              <label for="nombre" maxlength="20" class="select-label">Nombre</label>
               <input id="nombre" name="nombre" type="text" class="chips browser-default">
             </div>
             <div class="input-field column col row">
               <label for="apellido" class="select-label">Apellido</label>
-              <input id="apellido" name="apellido" type="text" class="chips browser-default">
+              <input id="apellido" maxlength="20" name="apellido" type="text" class="chips browser-default">
             </div>
           </div>
           <div class="row">
@@ -42,16 +50,16 @@
           <div class="row">
             <div class="input-field column col row">
               <label for="provincia" class="select-label">Provincia</label>
-              <input id="provincia" type="text" name="provincia" class="chips browser-default">
+              <input id="provincia" maxlength="100" type="text" name="provincia" class="chips browser-default">
             </div>
             <div class="input-field column col row">
               <label for="localidad" class="select-label">Localidad</label>
-              <input id="localidad" type="text" name="localidad" class="chips browser-default">
+              <input id="localidad" maxlength="100" type="text" name="localidad" class="chips browser-default">
             </div>
           </div>
           <div class="row">
             <div class="input-field column col row">
-              <label for="calle" class="select-label">Calle</label>
+              <label for="calle" maxlength="100" class="select-label">Calle</label>
               <input id="calle" type="text" name="calle" class="chips browser-default">
             </div>
             <div class="input-field column col row">
@@ -64,22 +72,32 @@
               <label for="numeroCelular" class="select-label">Numero celular</label>
               <input id="numeroCelular" type="text" name="numeroCelular" class="chips browser-default">
             </div>
+            <div class="input-field column col row">
+              <label for="codigoPostal" class="select-label">CP</label>
+              <input id="codigoPostal" type="text" name="codigoPostal" class="chips browser-default">
+            </div>
+          </div>
+          <div class="row">
+            <div class="input-field column col row">
+              <label for="datosAdicionales" class="select-label">Datos adicionales</label>
+              <input id="datosAdicionales" maxlength="150" type="text" name="datosAdicionales" class="chips browser-default">
+            </div>
           </div>
           <div class="modal-footer">
-            <a href="#!" class="modal-close waves-effect waves-green btn-flat">Cerrar</a>
-            <a href="#!" id="prev" class="waves-effect waves-green btn-flat">Anterior</a>
-            <button id="submit" class="waves-effect waves-green btn-flat green darken-3 orange-text text-lighten-5">Comprar</button>
+            <a href="#!" class="modal-close waves-effect waves-green btn-small">Cerrar</a>
+            <a href="#!" id="prev" class="waves-effect waves-green btn-small">Anterior</a>
+            <button id="submit" class="waves-effect waves-green btn-small green darken-3 orange-text text-lighten-5">Comprar</button>
           </div>
         </form>
       </div>
       <!-- Step 3 -->
       <div class="step hide" id="step3">
-        <h4>Compra existosa!</h4>
+        <h4>Su pago se procesara desde otra ventana!</h4>
         <div class="row" id="containerArtsCarrito">
         </div>
-            <p>Se envio el comprobante de compra a su bandeja de correo</p>
+            <p>Recuerde habilitar ventanas emergentes!</p>
         <div class="modal-footer">
-          <a href="#!" id="finalizaCompra" class="waves-effect waves-green btn-flat">Confirmar</a>
+          <a href="#!" id="finalizar" class="waves-effect waves-green btn-small">Finalizar</a>
       </div>
       </div>
     </div>
