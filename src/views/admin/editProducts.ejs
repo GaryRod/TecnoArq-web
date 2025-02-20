@@ -21,7 +21,9 @@
 <body>
   
   <section id="containerProducts" class="container">
-    <button class="btn" id="crearMarca">Crear marca</button>
+    <button data-target="modalAccesorios" class="modal-trigger btn btn-small" id="crearAccesorios">Accesorios</button>
+    <button class="btn btn-small" id="crearMarca">Crear marca</button>
+    <a href="./logout" class="btn btn-small red accent-4" id="cerrarSesion">Cerrar sesión</a>
     <ul class="collapsible expandable">
       <% marcas.forEach(marca => { %>
         <li>
@@ -36,12 +38,15 @@
                 <input type="checkbox" class="utilizable" <%= marca.utilizable === true ? "checked" : "" %>/>
                 <span></span>
               </label>
-              <div class="">
+              <div>
                 <input type="text" class="nombreMarca" value="<%= marca.nombre %>" placeholder="Nombre" maxlength="100">
                 <div class="mensaje-error red-text text-accent-4"></div>
               </div>
               <button class="btn btn-small update-btn">
                 <i class="material-icons">check</i>
+              </button>
+              <button class="btn btn-small red accent-4 delete-btn" <%= marca.existeArticuloMarca ? "disabled" : "" %> >
+                <i class="material-icons">delete</i>
               </button>
             </div>
             <!-- Texto del nombre (se oculta al editar) -->
@@ -62,14 +67,17 @@
                         <i class="fa fa-dot-circle-o" aria-hidden="true"></i>
                       </div>
                       <!-- Checkbox -->
-                      <div class="col s12 m1"  style="margin-top: 10px;">
+                      <div class="col s12 m2" style="margin-top: 16px; display: flex; align-items: center; justify-content: center;">
                         <label>
                           <input class="utilizable" type="checkbox" <%= articulo.utilizable === true ? "checked" : "" %>/>
                           <span></span>
                         </label>
+                        <button data-target="modalAccesoriosArticulo" class="modal-trigger btn-floating btn-small">
+                          <span class="material-icons">add_circle</span>
+                        </button>
                       </div>
                       <!-- Input: Nombre -->
-                      <div class="col s12 m6">
+                      <div class="col s12 m5">
                         <input type="text" class="nombreArticulo" data-codigo="<%= articulo.codigo %>" value="<%= articulo.nombre %>" maxlength="300" placeholder="Nombre"/>
                         <div class="mensaje-error red-text text-accent-4"></div>
                       </div>
@@ -85,7 +93,6 @@
                       </div>
                     </div>
                   </div>
-                
                   <!-- Bloque de Botones -->
                   <div class="col s2">
                     <div class="row">
@@ -105,12 +112,34 @@
               <% }); %>
             </ul>
             <div class="col s2">
-              <button class="btn nuevoArticulo">Nuevo articulo</button>
+              <button class="btn btn-small nuevoArticulo">Nuevo articulo</button>
             </div>
           </div>
         </li>
       <% }); %>
     </ul>
+
+    <div id="modalAccesoriosArticulo" class="modal">
+      <div class="modal-content">
+        <h4 id="cabecera">Accesorios</h4>
+      </div>
+      <div class="modal-footer">
+        <a href="#!" class="modal-close waves-effect waves-green btn-small" id="cerrarAccesoriosArticulo">Cerrar</a>
+        <a href="#!" class="modal-close waves-effect waves-green btn-small" id="grabarAccesoriosArticulo">Guardar</a>
+      </div>
+    </div>
+
+    <div id="modalAccesorios" class="modal">
+      <div class="modal-content">
+        <h4 id="cabecera" class="row">Accesorios</h4>
+        <button class="btn btn-small row" id="crearAccesorio">Crear accesorio</button>
+        <div id="containerAccesorios"></div>
+      </div>
+      <div class="modal-footer">
+        <a href="#!" class="modal-close waves-effect waves-green btn-small" id="cerrarAccesorios">Cerrar</a>
+      </div>
+    </div>
+  
   </section>
     <div class="col s12 center">
       <p style="color: rgb(161, 161, 35);">Copyright 2024 © FISIONTECH | Todos los derechos reservados</p>   

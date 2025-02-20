@@ -10,9 +10,9 @@ class Marca{
     static async findById(connection, codigo){
         try {
             const [resultsDB] = await connection.query('SELECT CODIGO_MARCA as codigo, NOMBRE_MARCA as nombre, UTILIZABLE as utilizable FROM MARCAS WHERE CODIGO_MARCA = ?', [codigo]);
-            const result = resultsDB[0];
+            let result = resultsDB[0];
             if (result) {
-                results = new Marca(result.codigo, result.nombre, result.utilizable);
+                result = new Marca(result.codigo, result.nombre, result.utilizable);
             }
             return result;
         } catch (error) {
@@ -36,7 +36,7 @@ class Marca{
 
     static async insert(connection, codigo, nombre, utilizable) {
         try {
-            const [result]= await connection.execute('INSERT INTO MARCAS (CODIGO_MARCA, NOMBRE_MARCA, UTILIZABLE) VALUES (?,?, ?)', [codigo, nombre, utilizable]);
+            const [result]= await connection.execute('INSERT INTO MARCAS (CODIGO_MARCA, NOMBRE_MARCA, UTILIZABLE) VALUES (?,?,?)', [codigo, nombre, utilizable]);
             return result;
         } catch (error) {
             throw new Error('Error al insertar marca')
@@ -49,6 +49,15 @@ class Marca{
             return result;
         } catch (error) {
             throw new Error('Error al actualizar marca')
+        }
+    }
+
+    static async delete(connection, codigo) {
+        try {
+            const [result]= await connection.execute('DELETE FROM MARCAS WHERE CODIGO_MARCA = ?', [codigo]);
+            return result;
+        } catch (error) {
+            throw new Error('Error al eliminar marca')
         }
     }
 }

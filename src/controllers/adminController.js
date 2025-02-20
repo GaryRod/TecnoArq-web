@@ -2,6 +2,8 @@ import executeTransaction from'../helpers/transactionHelper.js';
 import dbArticulos from'../models/articulosModel.js';
 import dbArticulosPedidos from'../models/articulosPedidosModel.js';
 import dbMarcas from'../models/marcasModel.js';
+import dbAccesorios from'../models/accesoriosModel.js';
+import dbAccesoriosArticulo from'../models/articuloAccesoriosModel.js';
 import {validationResult} from 'express-validator';
 
 const adminController = {
@@ -31,25 +33,25 @@ const adminController = {
     }
   },
 
-  dashboard: async (req, res) => {
-    await executeTransaction(async (connection) => {
-        let articulos = await dbArticulos.getAll(connection);
-        for (const articulo of articulos) {
-          let existeArticulo = await dbArticulosPedidos.exist(connection, articulo.codigo);
-          articulo.existeArticulo = existeArticulo;
-        }
-        let marcas = await dbMarcas.getAll(connection);
-        res.render("./admin/editProducts", {articulos, marcas});
-    })
+  logout: (req, res) => {
+    req.session.destroy();
+    return res.redirect('/admin');
   },
 
-  logout: (req, res) => {
-      req.session.destroy(err => {
-        if (err) {
-          return res.status(500).send('Error al cerrar sesión.');
-        }
-        res.status(401).send('Sesión cerrada. Por favor, autentícate nuevamente.');
-      });
+  dashboard: async (req, res) => {
+    await executeTransaction(async (connection) => {
+      let articulos = await dbArticulos.getAll(connection);
+      for (const articulo of articulos) {
+        let existeArticulo = await dbArticulosPedidos.existArticle(connection, articulo.codigo);
+        articulo.existeArticulo = existeArticulo;
+      }
+      let marcas = await dbMarcas.getAll(connection);
+      for (const marca of marcas) {
+        let existeArticuloMarca = await dbArticulosPedidos.existMarca(connection, marca.codigo);
+        marca.existeArticuloMarca = existeArticuloMarca;
+      }
+      res.render("./admin/editProducts", {articulos, marcas});
+    })
   },
 
   updateArticulo: async (req, res) => {
@@ -135,7 +137,120 @@ const adminController = {
     } catch (error) {
       res.json({ hayError: true, mensaje: `Error inesperado, ${error.message}!` });
     }
-  }
+  },
+
+  deleteMarca: async (req, res) => {
+    try {
+      let error;
+      let hayError = false;
+      await executeTransaction(async (connection) => {
+        const body = req.body;
+        await dbMarcas.delete(connection, body.codigo);
+      })
+      res.json({ hayError: hayError, mensaje: error });
+    } catch (error) {
+      res.json({ hayError: true, mensaje: `Error inesperado, ${error.message}!` });
+    }
+  },
+
+  getAccesoriosArticulo: async (req, res) => {
+    try {
+      await executeTransaction(async (connection) => {
+        const body = req.body;
+        let accesorios = await dbAccesorios.getAll(connection);
+        accesorios = accesorios.filter(acc => acc.utilizable)
+        for (const accesorio of accesorios) {
+          const existeAccesorioArticulo = await dbAccesoriosArticulo.existAccesorie(connection, body.codigoArt, accesorio.codigo)
+          accesorio.existeAccesorioArticulo = existeAccesorioArticulo;
+        }
+        res.json({accesorios});
+      })
+    } catch (error) {
+      res.json({ hayError: true, mensaje: `Error inesperado, ${error.message}!` });
+    }
+  },
+
+  
+  grabarAccesoriosArticulo: async (req, res) => {
+    try {
+      let error;
+      let hayError = false;
+      await executeTransaction(async (connection) => {
+        const body = req.body;
+        await dbAccesoriosArticulo.deleteByIdArt(connection, body.codigoArticulo);
+        for (const data of body.values) {
+          await dbAccesoriosArticulo.insert(connection, body.codigoArticulo, data.codigoAccesorio)
+        }
+      })
+      res.json({ hayError: hayError, mensaje: error });
+    } catch (error) {
+      res.json({ hayError: true, mensaje: `Error inesperado, ${error.message}!` });
+    }
+  },
+
+    
+  getAccesorios: async (req, res) => {
+    try {
+      await executeTransaction(async (connection) => {
+        let accesorios = await dbAccesorios.getAll(connection);
+        for (const accesorio of accesorios) {
+           accesorio.existeReferenciaArticulo = await dbAccesoriosArticulo.existReferencesByCodAccesorie(connection, accesorio.codigo)
+        }
+        res.json({accesorios});
+      })
+    } catch (error) {
+      res.json({ hayError: true, mensaje: `Error inesperado, ${error.message}!` });
+    }
+  },
+
+  updateAccesorio: async(req, res) => {
+    try {
+      let error;
+      let hayError = false;
+      await executeTransaction(async (connection) => {
+        const body = req.body;
+        await dbAccesorios.update(connection, body.codigoAccesorio, body.nombre, body.utilizable);
+      })
+      res.json({ hayError: hayError, mensaje: error });
+    } catch (error) {
+      res.json({ hayError: true, mensaje: `Error inesperado, ${error.message}!` });
+    }
+  },
+
+  deleteAccesorio: async (req, res) => {
+    try {
+      let error;
+      let hayError = false;
+      await executeTransaction(async (connection) => {
+        const body = req.body;
+        await dbAccesorios.delete(connection, body.codigoAccesorio);
+      })
+      res.json({ hayError: hayError, mensaje: error });
+    } catch (error) {
+      res.json({ hayError: true, mensaje: `Error inesperado, ${error.message}!` });
+    }
+  },
+
+  
+  createAccesorio: async (req, res) => {
+    try {
+      let error;
+      let hayError = false;
+      await executeTransaction(async (connection) => {
+        const body = req.body;
+        let accesorio = await dbAccesorios.findById(connection, body.codigoAccesorio);
+        if (!accesorio) {
+          await dbAccesorios.insert(connection, body.codigoAccesorio, body.nombre, body.utilizable);
+        } else {
+          error = "Código de accesorio existente";
+          hayError = true;
+        }
+      })
+      res.json({ hayError: hayError, mensaje: error });
+    } catch (error) {
+      res.json({ hayError: true, mensaje: `Error inesperado, ${error.message}!` });
+    }
+  },
 };
 
 export default adminController;

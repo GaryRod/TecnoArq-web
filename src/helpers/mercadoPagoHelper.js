@@ -38,12 +38,12 @@ const crearOrden = async (body) => {
             }
           },
           back_urls: {
-            success: "http://localhost:3000/comprobar",
-            failure: "http://localhost:3000/comprobar",
-            pending: "http://localhost:3000/comprobar"
+            success: "http://localhost:3000",
+            failure: "http://localhost:3000",
+            pending: "http://localhost:3000"
           },
           auto_return: "approved",
-          notification_url: "https://7086-190-104-33-54.ngrok-free.app/comprobar",
+          notification_url: "https://8805-190-104-33-54.ngrok-free.app/comprobar",
           metadata: {
             email: body.email,
             itemsUSD: itemsUSD

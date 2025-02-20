@@ -18,12 +18,21 @@ class ArticulosPedidos{
         }
     }
 
-    static async exist(connection, codigoArticulo){
+    static async existArticle(connection, codigoArticulo){
         try {
             let [returnDB] = await connection.query('SELECT (CASE WHEN EXISTS (SELECT 1 FROM ARTICULOS_PEDIDOS WHERE CODIGO_ARTICULO_FK = ?) THEN 1 ELSE 0 END) as existeArticulo', [codigoArticulo]);
             return returnDB[0].existeArticulo;
         } catch (error) {
             throw new Error('Error al obtener existencia de artículo en pedidos')
+        }
+    }
+    
+    static async existMarca(connection, codigoMarca){
+        try {
+            let [returnDB] = await connection.query('SELECT (CASE WHEN EXISTS (SELECT 1 FROM ARTICULOS_PEDIDOS WHERE CODIGO_ARTICULO_FK IN (SELECT CODIGO_ARTICULO FROM ARTICULOS WHERE CODIGO_MARCA_FK = ?)) THEN 1 ELSE 0 END) AS existeArticuloMarca', [codigoMarca]);
+            return returnDB[0].existeArticuloMarca;
+        } catch (error) {
+            throw new Error('Error al obtener existencia de marca en pedidos')
         }
     }
 }

@@ -21,7 +21,7 @@ class Articulo{
             const articulo = resultsDB[0];
             let result;
             if (articulo)
-              result = new Articulo(articulo.codigo, articulo.nombre, articulo.codigoMarca, formato.format(articulo.precio), formato.format(articulo.precioUSD, utilizable === 1));
+              result = new Articulo(articulo.codigo, articulo.nombre, articulo.codigoMarca, formato.format(articulo.precio), formato.format(articulo.precioUSD, articulo.utilizable === 1));
             return result;
         } catch (error) {
             throw new Error('Error al obtener artículo')

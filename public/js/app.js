@@ -1,8 +1,54 @@
 $(document).ready(function() {
   $('.sidenav').sidenav();
   $('.parallax').parallax();
+  const modalAccesorios = document.querySelector('#modalAccesorios');
+  let instanceModalAccesorios = M.Modal.init(modalAccesorios, {
+    onCloseStart: function (e, trigger) {
+        const contentsAccesorios = document.querySelectorAll("#content-accesorio");
+        contentsAccesorios.forEach(element => {
+          element.remove();
+      })
+    },
+    onOpenStart: function (e, trigger) {
+      const button = trigger.closest("li").querySelector(".agregarArticulo");
+      const codigoArt = button.getAttribute("data-codigo")
+      const dataArt = {
+        codigoArt
+      }
+      fetch('/accesoriosArticulo', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(dataArt)
+      })
+      .then(response => response.text())
+      .then(data => {
+        const container = e.querySelector(".modal-content");
+        container.setAttribute("data-codigoArticulo", codigoArt);
+        data = JSON.parse(data);
+        for (const accesorio of data.accesorios) {
+          const accesorioAgregar = `<div class="col s12 m2" id="content-accesorio" style="margin-top: 16px; 
+                                    display: flex; align-items: center; justify-content: center;">
+                                      <div class="col s12 m5">
+                                        <input type="text" class="nombreAccesorio" placeholder="Nombre" value="${accesorio.nombre}" readonly/>
+                                      </div>
+                                    </div>`
+          container.insertAdjacentHTML("beforeend", accesorioAgregar);
+        }
+      })
+      .catch(error => {
+        M.toast({
+          html: `Ocurrió un error al grabar, ${error}`,
+          classes: 'rounded red lighten-1',
+          displayLength: 2000
+        });
+      });
+    }
+  });
 
-  const modal = document.querySelector('.modal');
+  
+  const modal = document.querySelector('#modalCompra');
   let instance = M.Modal.init(modal, {dismissible: false});
     
   const step1 = document.querySelector('#step1')
@@ -10,7 +56,8 @@ $(document).ready(function() {
   const step3 = document.querySelector('#step3')
   const next = document.querySelector('#next')
   const prev = document.querySelector('#prev')
-  const finalizaCompra = document.querySelector('#finalizaCompra')
+  const comprar = document.querySelector('#submit')
+  const finalizar = document.querySelector('#finalizar')
   next.addEventListener('click', e => {
     let carrito = JSON.parse(localStorage.getItem("carrito")) || [];
     if (carrito.length > 0) {
@@ -18,12 +65,18 @@ $(document).ready(function() {
       step2.classList.remove('hide');
     }
   })
+
   prev.addEventListener('click', e => {
     step1.classList.remove('hide');
     step2.classList.add('hide');
   })
+
+  comprar.addEventListener("click", e => {
+    step3.classList.remove('hide');
+    step2.classList.add('hide');
+  })
   
-  finalizaCompra.addEventListener('click', e => {
+  finalizar.addEventListener('click', e => {
     instance.close(modal);
     limpiarCarrito(true);
     step1.classList.remove('hide');
@@ -65,6 +118,11 @@ document.querySelector("#containerProducts").addEventListener('click', e => {
     }
     limpiarCarrito(true);
     localStorage.setItem("carrito", JSON.stringify(carrito));
+    M.toast({
+      html: 'Se agregó el articulo',
+      classes: 'rounded green lighten-1',
+      displayLength: 2000
+    });
   }
 })
 
@@ -134,12 +192,21 @@ document.querySelector("#carritoCompra").addEventListener("click", e => {
     div.classList.add('rowCarrito')
     div.classList.add('row')
     div.setAttribute('data-codigo', art.codigo)
-    let agregarArticulo = `<span class="column col s2 nombreCarrito">${art.nombre}</span>
-                          <span class="column col s2 precioCarrito" data-precioUnitario="${art.precioUnitario}">$${art.precio}</span>
-                          <span class="column col s2 cantidadCarrito">${art.cantidad}</span>
-                          <span class="column col s2 restarArticulo estiloCarrito">-</span>
-                          <span class="column col s2 sumarArticulo estiloCarrito">+</span>
-                          <span class="column col s2 eliminarArticulo">Eliminar</span>`;
+    let agregarArticulo = `<div class="detallesCarrito">
+                            <span class="column col s2 nombreCarrito">${art.nombre}</span>
+                            <span class="column col s2 precioCarrito" data-precioUnitario="${art.precioUnitario}">$${art.precio}</span>
+                            <span class="column col s1 cantidadCarrito">${art.cantidad}</span>
+                             </div>
+                          <div class="accionesCarrito">
+                            <span class="column col s1 restarArticulo estiloCarrito">-</span>
+                            <span class="column col s1 sumarArticulo estiloCarrito">+</span>
+                            <span class="column col s2 eliminarArticulo"> 
+                              <button class="btn btn-small red accent-4 delete-btn" >
+                                <i class="material-icons">delete</i>
+                              </button>
+                            </span>
+                          </div>
+                          `;
     div.innerHTML = agregarArticulo;
     containerArts.appendChild(div);
   })
