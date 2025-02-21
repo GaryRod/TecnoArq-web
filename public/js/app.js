@@ -167,14 +167,14 @@ document.querySelector("#containerArtsCarrito").addEventListener('click', e => {
       const product = elementoActual.parentElement.dataset;
       let indice = carrito.findIndex(art => art.codigo === product.codigo);
       carrito.pop(indice);
-      elementoActual.parentElement.parentElement.removeChild(elementoActual.parentElement)
+      elementoActual.closest(".rowCarrito").remove();
     }
   }
-  else if (elementoActual.classList.contains('eliminarArticulo')){
+  else if (elementoActual.classList.contains('eliminarArticulo') || elementoActual.closest(".eliminarArticulo")){
     const product = elementoActual.parentElement.dataset;
     let indice = carrito.findIndex(art => art.codigo === product.codigo);
     carrito.pop(indice);
-    elementoActual.parentElement.parentElement.removeChild(elementoActual.parentElement)
+    elementoActual.closest(".rowCarrito").remove();
     limpiarStorage = true;
   }
   if (limpiarStorage) {
