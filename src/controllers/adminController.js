@@ -22,10 +22,10 @@ const adminController = {
     const { username, password } = req.body;
     console.log("usuario enviado " + username)
     console.log("constrasenia enviada " + password)
-    console.log("usuario env " + process.env.USER )
+    console.log("usuario env " + process.env.USER_ACCESS )
     console.log("constrasenia env " + process.env.USER_PASSWORD)
 
-    if (username === process.env.USER && password === process.env.USER_PASSWORD) {
+    if (username === process.env.USER_ACCESS && password === process.env.USER_PASSWORD) {
       req.session.user = username;
       res.redirect('/admin/dashboard');
     } else {
