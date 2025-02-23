@@ -11,7 +11,14 @@ import executeTransaction from'./transactionHelper.js';
 const crearOrden = async (body) => {
   try {
     const client = new MercadoPagoConfig({ accessToken: process.env.MP_ACCESS_TOKEN });
-      const items = body.carrito.map(art => ({id: art.codigo, title: art.nombre, quantity: art.cantidad, unit_price: Number(art.precio.replace(".","").replace(",","."))}));
+      const items = body.carrito.map(art => ({
+        id: art.codigo, 
+        title: art.nombre, 
+        quantity: art.cantidad, 
+        unit_price: Number(art.precio.replace(".","").replace(",",".")),
+        category_id: "phones",
+        currency_id: "ARS"
+      }));
       const itemsUSD = body.carrito.map(art => ({id: art.codigo, precioUSD: Number(art.preciousd.replace(".","").replace(",","."))}) )
       const preference = await new Preference(client).create({
           body: {
@@ -40,19 +47,20 @@ const crearOrden = async (body) => {
               }
             },
             back_urls: {
-              success: "http://localhost:3000",
-              failure: "http://localhost:3000",
-              pending: "http://localhost:3000"
+              success: "https://www.thefisiontech.com/",
+              failure: "https://www.thefisiontech.com/",
+              pending: "https://www.thefisiontech.com/"
             },
             auto_return: "approved",
             processing_mode: "aggregator",
-            notification_url: "https://993f-190-104-33-54.ngrok-free.app/comprobar",
+            notification_url: "https://www.thefisiontech.com/comprobar",
             metadata: {
               email: body.email,
               itemsUSD: itemsUSD
             }
           },
         })
+        console.log(preference)
       return preference.init_point;
   } catch (error) {
     console.log(error)
@@ -143,7 +151,7 @@ const validarPago = async (req, res) => {
               return res.sendStatus(204)
           }
         }
-        return res.sendStatus(400)
+        return res.sendStatus(204)
       }
     }
   } catch (error) {
