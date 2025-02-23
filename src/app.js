@@ -8,7 +8,6 @@ import cookieParser from'cookie-parser';
 
 import mainRoutes  from './routes/mainRoutes.js';
 import adminRoutes  from './routes/adminRoutes.js';
-// import userLoggedMiddleware from './middlewares/userLoggedMiddleware.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);

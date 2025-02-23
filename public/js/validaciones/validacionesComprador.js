@@ -88,9 +88,6 @@ window.addEventListener("load", () => {
 
     validador.setCampoErrores(campoErrores)
     buttonSubmit.addEventListener("click", (event) => {
-        const mp = new MercadoPago('APP_USR-5f006dc9-e0a3-47c3-88d5-9696dcfc0dfe', {
-            locale: 'es-AR'
-          });
         validador.eliminarErrores();
         try {
             let hayErrores = {
