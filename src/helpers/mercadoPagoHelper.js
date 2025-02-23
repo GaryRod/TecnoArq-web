@@ -60,7 +60,6 @@ const crearOrden = async (body) => {
             }
           },
         })
-        console.log(preference)
       return preference.init_point;
   } catch (error) {
     console.log(error)
