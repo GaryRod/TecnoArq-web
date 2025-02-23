@@ -10,6 +10,10 @@ import executeTransaction from'./transactionHelper.js';
 
 const crearOrden = async (body) => {
   try {
+    let numeroPedido;
+    await executeTransaction(async (connection) => {
+      numeroPedido = await dbPedidos.maxID(connection);
+    })
     const client = new MercadoPagoConfig({ accessToken: process.env.MP_ACCESS_TOKEN });
       const items = body.carrito.map(art => ({
         id: art.codigo, 
@@ -17,7 +21,8 @@ const crearOrden = async (body) => {
         quantity: art.cantidad, 
         unit_price: Number(art.precio.replace(".","").replace(",",".")),
         category_id: "phones",
-        currency_id: "ARS"
+        currency_id: "ARS",
+        description: `Producto ${art.nombre} con codigo ${art.codigo}`
       }));
       const itemsUSD = body.carrito.map(art => ({id: art.codigo, precioUSD: Number(art.preciousd.replace(".","").replace(",","."))}) )
       const preference = await new Preference(client).create({
@@ -54,6 +59,7 @@ const crearOrden = async (body) => {
             auto_return: "approved",
             processing_mode: "aggregator",
             notification_url: "https://www.thefisiontech.com/comprobar",
+            external_reference: numeroPedido,
             metadata: {
               email: body.email,
               itemsUSD: itemsUSD
