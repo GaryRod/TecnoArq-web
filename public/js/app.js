@@ -129,8 +129,8 @@ document.querySelector("#containerProducts").addEventListener('click', e => {
 document.querySelector("#containerArtsCarrito").addEventListener('click', e => {
   let limpiarStorage = false;
   const elementoActual = e.target;
-  const product = elementoActual.parentElement.dataset;
   const rowCarrito = elementoActual.closest(".rowCarrito");
+  const product = rowCarrito.dataset;
   let carrito = JSON.parse(localStorage.getItem("carrito")) || [];
   const cantidadArticulo = rowCarrito.querySelector(".cantidadCarrito");
   let precioArticulo = rowCarrito.querySelector(".precioCarrito");
@@ -164,7 +164,6 @@ document.querySelector("#containerArtsCarrito").addEventListener('click', e => {
         }
       })
     } else {
-      const product = elementoActual.parentElement.dataset;
       let indice = carrito.findIndex(art => art.codigo === product.codigo);
       carrito.pop(indice);
       elementoActual.closest(".rowCarrito").remove();
@@ -230,6 +229,7 @@ function limpiarCarrito(limpiarHTML){
     const elems = document.querySelectorAll('.collapsible.expandable');
     const instances = M.Collapsible.init(elems, {
       accordion: false,
+      alignment: 'left',
       onOpenStart: function(el) {
         const arrow = el.querySelector('.arrow-icon');
         if (arrow) arrow.classList.add('rotate'); // Añade la clase rotate
