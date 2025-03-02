@@ -34,6 +34,10 @@
             </button>
             <!-- Contenedor de edición (se oculta inicialmente) -->
             <div class="edit-container row" style="display: none; align-items: center; gap: 10px;">
+              <div class="file-field input-field">
+                <button class="btn buttonImgMarca" id="uploadBtn">Imagen</button>
+                <input type="file" id="fileInput" class="inputImgMarca" style="display: none;" accept=".png, .jpg, .jpeg, .webp">
+              </div>
               <label class="check-edit">
                 <input type="checkbox" class="utilizable" <%= marca.utilizable === true ? "checked" : "" %>/>
                 <span></span>
@@ -50,6 +54,7 @@
               </button>
             </div>
             <!-- Texto del nombre (se oculta al editar) -->
+            <img src="/images/<%= marca.imagen %>" class="imgMarca">
             <span class="nombreMarcaOriginal"><%= marca.nombre %></span>
             <i class="material-icons arrow-icon">expand_more</i>
           </div>

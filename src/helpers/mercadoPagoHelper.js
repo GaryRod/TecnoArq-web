@@ -62,7 +62,8 @@ const crearOrden = async (body) => {
             external_reference: numeroPedido,
             metadata: {
               email: body.email,
-              itemsUSD: itemsUSD
+              itemsUSD: itemsUSD,
+              numeroDocumento: body.numeroDocumento
             }
           },
         })
@@ -113,51 +114,57 @@ const validarPago = async (req, res) => {
             return res.sendStatus(204)
           }
           const data = await response.json();
-          const payer = data.payer;
-          const payerAditional = data.additional_info.payer;
-          const addresss = data.additional_info.shipments.receiver_address;
-          const itemsUSD = data.metadata.items_usd;
-          let body = {
-            nombre: payerAditional.first_name,
-            apellido: payerAditional.last_name,
-            email: data.metadata.email,
-            codigoPostal: addresss.zip_code,
-            datosAdicionales: addresss.floor ? addresss.floor : null,
-            numeroCelular: Number(payerAditional.phone.number.replaceAll(" ", "")),
-            numeroDocumento: Number(payer.identification.number),
-            localidad: addresss.city_name,
-            provincia: addresss.apartment,
-            calle: addresss.street_name,
-            numeroCalle: Number(addresss.street_number),
-            carrito: data.additional_info.items
+          if (data.status === 'approved') {
+            const payer = data.payer;
+            const payerAditional = data.additional_info.payer;
+            const addresss = data.additional_info.shipments.receiver_address;
+            const itemsUSD = data.metadata.items_usd;
+            let body = {
+              nombre: payerAditional.first_name,
+              apellido: payerAditional.last_name,
+              email: data.metadata.email,
+              codigoPostal: addresss.zip_code,
+              datosAdicionales: addresss.floor ? addresss.floor : null,
+              numeroCelular: Number(payerAditional.phone.number.replaceAll(" ", "")),
+              numeroDocumento: data.metadata.numero_documento,
+              localidad: addresss.city_name,
+              provincia: addresss.apartment,
+              calle: addresss.street_name,
+              numeroCalle: Number(addresss.street_number),
+              carrito: data.additional_info.items
+            }
+            let responseMail = await emailHelper(body);
+            let mensajeError;
+            if (!responseMail) {
+                mensajeError = "Lo sentimos surgio un error inesperado al enviar el mail con el comprobante, contactese con el administrador."
+            }
+            else
+            {
+              await executeTransaction(async (connection) => {
+                  const totalPrecio = body.carrito.reduce((total, art) => total + art.unit_price * art.quantity, 0);
+                  body.carrito.forEach(art => {
+                    art.precioUSD = itemsUSD.find(artUSD => artUSD.id === art.id).precio_usd;
+                  });
+                  const totalPrecioUSD = body.carrito.reduce((total, art) => total + art.precioUSD * art.quantity, 0);
+                  const numeroComprador = await dbCompradores.maxID(connection);
+                  await dbCompradores.insert(connection, numeroComprador, body.nombre, body.apellido, body.numeroDocumento, body.email, body.calle,body.numeroCalle, body.localidad, body.provincia, body.numeroCelular, body.codigoPostal, body.datosAdicionales);
+                  const numeroPedido = await dbPedidos.maxID(connection);
+                  await dbPedidos.insert(connection, numeroPedido, numeroComprador, CODIGO_MP, totalPrecio, totalPrecioUSD);
+                  for (const articulo of body.carrito) {
+                      const precioUSD = itemsUSD.find(artUSD => artUSD.id === articulo.id).precio_usd;
+                      await dbArticulosPedidos.insert(connection, numeroPedido, articulo.id, articulo.quantity, articulo.unit_price, precioUSD);
+                  }
+                  return res.sendStatus(204)
+                })
+            }
           }
-          let responseMail = await emailHelper(body);
-          let mensajeError;
-          if (!responseMail) {
-              mensajeError = "Lo sentimos surgio un error inesperado al enviar el mail con el comprobante, contactese con el administrador."
-          }
-          else
-          {
-            await executeTransaction(async (connection) => {
-                const totalPrecio = body.carrito.reduce((total, art) => total + art.unit_price * art.quantity, 0);
-                body.carrito.forEach(art => {
-                  art.precioUSD = itemsUSD.find(artUSD => artUSD.id === art.id).precio_usd;
-                });
-                const totalPrecioUSD = body.carrito.reduce((total, art) => total + art.precioUSD * art.quantity, 0);
-                const numeroComprador = await dbCompradores.maxID(connection);
-                await dbCompradores.insert(connection, numeroComprador, body.nombre, body.apellido, body.numeroDocumento, body.email, body.calle,body.numeroCalle, body.localidad, body.provincia, body.numeroCelular, body.codigoPostal, body.datosAdicionales);
-                const numeroPedido = await dbPedidos.maxID(connection);
-                await dbPedidos.insert(connection, numeroPedido, numeroComprador, CODIGO_MP, totalPrecio, totalPrecioUSD);
-                for (const articulo of body.carrito) {
-                    const precioUSD = itemsUSD.find(artUSD => artUSD.id === articulo.id).precio_usd;
-                    await dbArticulosPedidos.insert(connection, numeroPedido, articulo.id, articulo.quantity, articulo.unit_price, precioUSD);
-                }
-              })
-              return res.sendStatus(204)
+          else{
+            return res.sendStatus(204)
           }
         }
         return res.sendStatus(204)
       }
+      return res.sendStatus(204)
     }
   } catch (error) {
     console.log(error)

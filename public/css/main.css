@@ -519,6 +519,33 @@ button.agregarArticulo {
 }
 
 
+.btn-small .material-icons{
+  line-height: 32.4px !important;
+}
+
+.cabeceraModal{
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: inline-block;
+}
+
+.imgMarca{
+  width: 120px;
+  height: 60px;
+  margin-left: 10px;
+}
+
+.nombreMarca{
+  text-align: left !important;
+  margin-left: 15px;
+}
+
+.nombreMarcaOriginal {
+  text-align: left !important;
+  margin-left: 10px;
+}
+
 @media (max-width: 700px) {
   .accionesCarrito {
     display: flex !important;
@@ -540,15 +567,9 @@ button.agregarArticulo {
   .btn-floating i {
     width: initial !important;
   }
-}
 
-.btn-small .material-icons{
-  line-height: 32.4px !important;
-}
-
-.cabeceraModal{
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  display: inline-block;
+  .imgMarca{
+    width: 65px;
+    height: 30px;
+  }
 }

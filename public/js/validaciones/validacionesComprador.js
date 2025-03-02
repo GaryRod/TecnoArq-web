@@ -3,22 +3,20 @@ import enviarDatosCompra from './sendDataCompra.js';
 
 window.addEventListener("load", () => {
     M.updateTextFields();
-    let buttonSubmit = document.querySelector("#submit");
-    let nombre = document.querySelector("#nombre");
-    let apellido = document.querySelector("#apellido");
-    let email = document.querySelector("#email");
-    let provincia = document.querySelector("#provincia");
-    let localidad = document.querySelector("#localidad");
-    let calle = document.querySelector("#calle");
-    let numeroCalle = document.querySelector("#numeroCalle");
-    let numeroDocumento = document.querySelector("#dni");
-    let numeroCelular = document.querySelector("#numeroCelular");
-    let codigoPostal = document.querySelector("#codigoPostal");
-    let datosAdicionales = document.querySelector("#datosAdicionales");
-    let campoErrores = document.querySelector("#errores");
-    let expEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{3,4})+$/;
-
-
+    const buttonSubmit = document.querySelector("#submit");
+    const nombre = document.querySelector("#nombre");
+    const apellido = document.querySelector("#apellido");
+    const email = document.querySelector("#email");
+    const provincia = document.querySelector("#provincia");
+    const localidad = document.querySelector("#localidad");
+    const calle = document.querySelector("#calle");
+    const numeroCalle = document.querySelector("#numeroCalle");
+    const numeroDocumento = document.querySelector("#dni");
+    const numeroCelular = document.querySelector("#numeroCelular");
+    const codigoPostal = document.querySelector("#codigoPostal");
+    const datosAdicionales = document.querySelector("#datosAdicionales");
+    const campoErrores = document.querySelector("#errores");
+    const expEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{3,4})+$/;
 
     new Cleave('#dni', {
         numericOnly: true,
@@ -102,30 +100,24 @@ window.addEventListener("load", () => {
                 errorNumeroCelular: numeroCelularValidacion(),
                 errorCodigoPostal: codigoPostalValidacion()
             }
-            if (hayErrores.errorEmail || hayErrores.errorApellido || hayErrores.errorNombre || hayErrores.errorProvincia || hayErrores.errorLocalidad || 
-                hayErrores.errorCalle || hayErrores.errorNumeroCalle || hayErrores.errorNumeroDocumentoumeroDocumento || hayErrores.errorNumeroCelular || hayErrores.errorCodigoPostal) {
-                event.preventDefault();
+            const existeError = hayErrores.errorEmail || hayErrores.errorApellido || hayErrores.errorNombre || hayErrores.errorProvincia || hayErrores.errorLocalidad || 
+            hayErrores.errorCalle || hayErrores.errorNumeroCalle || hayErrores.errorNumeroDocumentoumeroDocumento || hayErrores.errorNumeroCelular || hayErrores.errorCodigoPostal;
+            if (existeError) {
                 validador.enviarErroresCamposVacios();
                 validador.enviarErroresCamposInvalidos();
             }
             else{
-                validador.eliminarErrores();
-                enviarDatosCompra(event,nombre.value,apellido.value,email.value,provincia.value,localidad.value,calle.value,numeroCalle.value,numeroDocumento.value, numeroCelular.value, codigoPostal.value, datosAdicionales.value)
+                enviarDatosCompra(event, nombre, apellido, email, provincia,localidad, calle, numeroCalle, numeroDocumento, numeroCelular, codigoPostal, datosAdicionales, validador)
             }
         } catch (error) {
             let mensajeError = "Error inesperado: " + error;
             validador.crearMensajeError(mensajeError)
-            event.preventDefault();
         }
     })
 
     
     function nombreValidacion() {
         return validador.validarCampoVacio(nombre, 'nombre');
-    }
-
-    function numeroCelularValidacion() {
-        return validador.validarCampoVacio(numeroCelular, 'numero celular');
     }
 
     function apellidoValidacion() {
@@ -149,7 +141,16 @@ window.addEventListener("load", () => {
     }
 
     function codigoPostalValidacion() {
-        return validador.validarCampoVacio(codigoPostal, 'codigo postal');
+        if (validador.validarCampoVacio(codigoPostal, 'codigo postal')){
+            return true;
+        }
+        else if (numeroDocumento.value.lenght < 4) {
+            validador.agregarCampoInvalido("codigo postal");
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 
     function numeroDocumentoValidacion() {

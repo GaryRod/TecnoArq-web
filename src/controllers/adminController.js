@@ -20,11 +20,6 @@ const adminController = {
       })
     }
     const { username, password } = req.body;
-    console.log("usuario enviado " + username)
-    console.log("constrasenia enviada " + password)
-    console.log("usuario env " + process.env.USER_ACCESS )
-    console.log("constrasenia env " + process.env.USER_PASSWORD)
-
     if (username === process.env.USER_ACCESS && password === process.env.USER_PASSWORD) {
       req.session.user = username;
       res.redirect('/admin/dashboard');
@@ -49,26 +44,34 @@ const adminController = {
       for (const articulo of articulos) {
         let existeArticulo = await dbArticulosPedidos.existArticle(connection, articulo.codigo);
         articulo.existeArticulo = existeArticulo;
-      }
+      };
       let marcas = await dbMarcas.getAll(connection);
       for (const marca of marcas) {
         let existeArticuloMarca = await dbArticulosPedidos.existMarca(connection, marca.codigo);
         marca.existeArticuloMarca = existeArticuloMarca;
-      }
+      };
       res.render("./admin/editProducts", {articulos, marcas});
     })
   },
 
   updateArticulo: async (req, res) => {
     try {
-      await executeTransaction(async (connection) => {
-        const body = req.body;
-        const precio = Number(body.precio.replace(".","").replace(",","."));
-        const precioUSD = Number(body.precioUSD.replace(".","").replace(",","."))
-        const utilizable = body.utilizable ? 1 : 0;
-        await dbArticulos.update(connection, body.codigo, body.articulo, precio, precioUSD, utilizable);
-      })
-      res.json({ hayError: false });
+      let hayError = false;
+      const errores = validationResult(req);
+      hayError = errores.errors.length > 0;
+      let mensajes;
+      if (hayError) {
+        mensajes = errores.mapped();
+      } else {
+        await executeTransaction(async (connection) => {
+          const body = req.body;
+          const precio = Number(body.precio.replace(".","").replace(",","."));
+          const precioUSD = Number(body.precioUSD.replace(".","").replace(",","."))
+          const utilizable = body.utilizable ? 1 : 0;
+          await dbArticulos.update(connection, body.codigo, body.articulo, precio, precioUSD, utilizable);
+        })
+      }
+      res.json({ hayError: hayError, mensaje: mensajes });
 
     } catch (error) {
       res.json({ hayError: true, mensaje: `Error inesperado, ${error.message}!` });
@@ -89,22 +92,22 @@ const adminController = {
 
   createArticulo: async (req, res) => {
     try {
-      let error;
       let hayError = false;
-      await executeTransaction(async (connection) => {
-        const body = req.body;
-        let articulo = await dbArticulos.findById(connection, body.codigo);
-        if (!articulo) {
+      const errores = validationResult(req);
+      hayError = errores.errors.length > 0;
+      let mensajes;
+      if (hayError) {
+        mensajes = errores.mapped();
+      } else {
+        await executeTransaction(async (connection) => {
+          const body = req.body;
           let precio = Number(body.precio.replace(".","").replace(",","."));
           let precioUSD = Number(body.precioUSD.replace(".","").replace(",","."));
           const utilizable = body.utilizable ? 1 : 0;
           await dbArticulos.insert(connection, body.codigo, body.articulo, precio, precioUSD, body.codigoMarca, utilizable);
-        } else {
-          error = "Código de artículo existente";
-          hayError = true;
-        }
-      })
-      res.json({ hayError: hayError, mensaje: error });
+        })
+      }
+      res.json({ hayError: hayError, mensaje: mensajes });
     } catch (error) {
       res.json({ hayError: true, mensaje: `Error inesperado, ${error.message}!` });
     }
@@ -112,19 +115,23 @@ const adminController = {
 
   createMarca: async (req, res) => {
     try {
-      let error;
       let hayError = false;
-      await executeTransaction(async (connection) => {
-        const body = req.body;
-        let articulo = await dbMarcas.findById(connection, body.codigo);
-        if (!articulo) {
-          await dbMarcas.insert(connection, body.codigo, body.marca, body.utilizable);
-        } else {
-          error = "Código de marca existente";
-          hayError = true;
-        }
-      })
-      res.json({ hayError: hayError, mensaje: error });
+      let rutaImg;
+      const errores = validationResult(req);
+      hayError = errores.errors.length > 0;
+      let mensajes;
+      if (hayError) {
+        mensajes = errores.mapped();
+      } else {
+        await executeTransaction(async (connection) => {
+          const body = req.body;
+          const imagen = req.file.filename;
+          const utilizable = body.utilizable ? 1 : 0;
+          await dbMarcas.insert(connection, body.codigo, body.marca, utilizable, imagen);
+          rutaImg = await dbMarcas.findRutaImg(connection, body.codigo);
+        })
+      }
+      res.json({ hayError: hayError, mensaje: mensajes, rutaImg: rutaImg });
     } catch (error) {
       res.json({ hayError: true, mensaje: `Error inesperado, ${error.message}!` });
     }
@@ -132,13 +139,26 @@ const adminController = {
 
   updateMarca: async (req, res) => {
     try {
-      let error;
       let hayError = false;
-      await executeTransaction(async (connection) => {
-        const body = req.body;
-        await dbMarcas.update(connection, body.codigo, body.marca, body.utilizable);
-      })
-      res.json({ hayError: hayError, mensaje: error });
+      let rutaImg;
+      const errores = validationResult(req);
+      hayError = errores.errors.length > 0;
+      let mensajes;
+      if (hayError) {
+        mensajes = errores.mapped();
+      } else {
+        await executeTransaction(async (connection) => {
+          const body = req.body;
+          const imagen = req.file ? req.file.filename : req.body.oldAvatar;
+          const utilizable = body.utilizable ? 1 : 0;
+          await dbMarcas.update(connection, body.codigo, body.marca, utilizable);
+          if (imagen) {
+            await dbMarcas.updateImg(connection, body.codigo, imagen);
+            rutaImg = await dbMarcas.findRutaImg(connection, body.codigo);
+          }
+        })
+      }
+      res.json({ hayError: hayError, mensaje: mensajes, rutaImg: rutaImg });
     } catch (error) {
       res.json({ hayError: true, mensaje: `Error inesperado, ${error.message}!` });
     }
@@ -178,16 +198,22 @@ const adminController = {
   
   grabarAccesoriosArticulo: async (req, res) => {
     try {
-      let error;
       let hayError = false;
-      await executeTransaction(async (connection) => {
-        const body = req.body;
-        await dbAccesoriosArticulo.deleteByIdArt(connection, body.codigoArticulo);
-        for (const data of body.values) {
-          await dbAccesoriosArticulo.insert(connection, body.codigoArticulo, data.codigoAccesorio)
-        }
-      })
-      res.json({ hayError: hayError, mensaje: error });
+      const errores = validationResult(req);
+      hayError = errores.errors.length > 0;
+      let mensajes;
+      if (hayError) {
+        mensajes = errores.mapped();
+      } else {
+        await executeTransaction(async (connection) => {
+          const body = req.body;
+          await dbAccesoriosArticulo.deleteByIdArt(connection, body.codigoArticulo);
+          for (const data of body.values) {
+            await dbAccesoriosArticulo.insert(connection, body.codigoArticulo, data.codigoAccesorio)
+          }
+        })
+      }
+      res.json({ hayError: hayError, mensaje: mensajes });
     } catch (error) {
       res.json({ hayError: true, mensaje: `Error inesperado, ${error.message}!` });
     }
@@ -210,13 +236,20 @@ const adminController = {
 
   updateAccesorio: async(req, res) => {
     try {
-      let error;
       let hayError = false;
-      await executeTransaction(async (connection) => {
-        const body = req.body;
-        await dbAccesorios.update(connection, body.codigoAccesorio, body.nombre, body.utilizable);
-      })
-      res.json({ hayError: hayError, mensaje: error });
+      const errores = validationResult(req);
+      hayError = errores.errors.length > 0;
+      let mensajes;
+      if (hayError) {
+        mensajes = errores.mapped();
+      } else {
+        await executeTransaction(async (connection) => {
+          const body = req.body;
+          const utilizable = body.utilizable ? 1 : 0;
+          await dbAccesorios.update(connection, body.codigoAccesorio, body.nombreAccesorio, utilizable);
+        })
+      }
+      res.json({ hayError: hayError, mensaje: mensajes });
     } catch (error) {
       res.json({ hayError: true, mensaje: `Error inesperado, ${error.message}!` });
     }
@@ -239,19 +272,20 @@ const adminController = {
   
   createAccesorio: async (req, res) => {
     try {
-      let error;
       let hayError = false;
-      await executeTransaction(async (connection) => {
-        const body = req.body;
-        let accesorio = await dbAccesorios.findById(connection, body.codigoAccesorio);
-        if (!accesorio) {
-          await dbAccesorios.insert(connection, body.codigoAccesorio, body.nombre, body.utilizable);
-        } else {
-          error = "Código de accesorio existente";
-          hayError = true;
-        }
-      })
-      res.json({ hayError: hayError, mensaje: error });
+      const errores = validationResult(req);
+      hayError = errores.errors.length > 0;
+      let mensajes;
+      if (hayError) {
+        mensajes = errores.mapped();
+      } else {
+        await executeTransaction(async (connection) => {
+          const body = req.body;
+          const utilizable = body.utilizable ? 1 : 0;
+          await dbAccesorios.insert(connection, body.codigoAccesorio, body.nombreAccesorio, utilizable);
+        })
+      }
+      res.json({ hayError: hayError, mensaje: mensajes });
     } catch (error) {
       res.json({ hayError: true, mensaje: `Error inesperado, ${error.message}!` });
     }

@@ -149,6 +149,8 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 document.querySelector(".collapsible.expandable").addEventListener("click", function (event) {
+  
+  
   const header = event.target.closest('.collapsible-header');
   const editBtn = event.target.closest('.edit-btn');
   const checkEdit = event.target.closest('.check-edit');
@@ -157,10 +159,16 @@ document.querySelector(".collapsible.expandable").addEventListener("click", func
   const deleteBtn = event.target.closest('.delete-btn');
   const saveBtn = event.target.closest('.save-btn');
   const sinGuardar = event.target.closest('.sinGuardar');
+  const buttonImgMarca = event.target.closest('.buttonImgMarca');
+  const inputImgMarca = event.target.closest('.inputImgMarca');
   
-  if (editBtn || checkEdit || nombreMarca || saveBtn || sinGuardar || updateBtn || deleteBtn)
+  if (editBtn || checkEdit || nombreMarca || saveBtn || sinGuardar || updateBtn || deleteBtn || buttonImgMarca || inputImgMarca)
     event.stopImmediatePropagation();
+  if (buttonImgMarca) {
+    buttonImgMarca.nextElementSibling.click();
+  }
   if (editBtn) {
+    header.querySelector(".imgMarca").style.display = "none";
     header.querySelector(".arrow-icon").style.display = "none";
     header.querySelector(".nombreMarcaOriginal").style.display = "none";
     header.querySelector(".update-btn").style.display = "block";
@@ -182,7 +190,6 @@ document.querySelector(".collapsible.expandable").addEventListener("click", func
     eliminarArticulo(event);
 });
 
-
 document.querySelector("#crearMarca").addEventListener('click', e => {
   const containerCollapsible = document.querySelector(".expandable");
   const li = document.createElement("li")
@@ -193,6 +200,11 @@ document.querySelector("#crearMarca").addEventListener('click', e => {
                       </button>
                       <!-- Contenedor de edición (se oculta inicialmente) -->
                       <div class="edit-container row" style="display: flex; align-items: center; gap: 10px;">
+                        <div class="file-field input-field">
+                          <button class="btn buttonImgMarca" id="uploadBtn">Imagen</button>
+                          <input type="file" id="fileInput" class="inputImgMarca" style="display: none;">
+                          <div class="mensaje-error red-text text-accent-4"></div>
+                        </div>
                         <label class="check-edit">
                           <input type="checkbox" class="utilizable" checked/>
                           <span></span>
@@ -215,6 +227,7 @@ document.querySelector("#crearMarca").addEventListener('click', e => {
                         </button>
                       </div>
                       <!-- Texto del nombre (se oculta al editar) -->
+                      <img src="" class="imgMarca" style="display: none;">
                       <span class="nombreMarcaOriginal" style="display: none;"></span>
                       <i class="material-icons arrow-icon" style="display: none;">expand_more</i>
                     </div>
@@ -311,29 +324,25 @@ document.querySelector("#containerProducts").addEventListener('click', e => {
   }
 })
 
-document.querySelectorAll(".containerMarca").forEach(element => {
-  element.addEventListener('click', e => {
-  
-  })
-})
-
 function actualizarMarca(e) {
   const header = e.target.closest(".collapsible-header");
   const marca = header.querySelector(".nombreMarca")
   const utilizable = header.querySelector(".utilizable")
-  const datosFormulario = {
-    codigo: header.getAttribute("data-codigoMarca"),
-    marca: marca.value,
-    utilizable: utilizable.checked
-  }
+  const fileInput = header.querySelector("input[type='file']");
+  let file;
+  const enviaImagen = fileInput.files.length > 0;
+  if (enviaImagen)
+    file = fileInput.files[0];
+  const formData = new FormData();
+  formData.append("archivo", file);
+  formData.append("codigo", header.getAttribute("data-codigoMarca"));
+  formData.append("marca", marca.value);
+  formData.append("utilizable", utilizable.checked);
   let hayError = validarMarcaActualizar(marca);
   if (!hayError) {
     fetch('/admin/updateMarca', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(datosFormulario)
+      body: formData
     })
     .then(response => response.text())
     .then(data => {
@@ -345,6 +354,12 @@ function actualizarMarca(e) {
         marcaNombre.innerText = marca.value;
         header.querySelector(".edit-container").style.display = "none";
         header.querySelector(".edit-btn").style.display = "block";
+        const imgMarca = header.querySelector(".imgMarca")
+        imgMarca.style.display = "block";
+        if (enviaImagen) {
+          const rutaImagen = `/images/${data.rutaImg}`
+          imgMarca.setAttribute("src", rutaImagen)
+        }
         e.target.closest('.update-btn').style.display = "none";
         const deletBtn = e.target.closest('.delete-btn');
         if (deletBtn)
@@ -354,6 +369,11 @@ function actualizarMarca(e) {
           classes: 'rounded green lighten-1',
           displayLength: 2000
         });
+      } else if (typeof(data.mensaje) === 'object') {
+        if (data.mensaje?.marca?.msg)
+          mostrarTooltip(marca, data.mensaje.marca.msg);
+        else
+          ocultarTooltip(marca);
       } else {
         M.toast({
           html: data.mensaje,
@@ -377,19 +397,18 @@ function grabarMarca(e) {
   const marca = header.querySelector(".nombreMarca")
   const marcaCodigo = header.querySelector(".codigoMarca")
   const utilizable = header.querySelector(".utilizable")
-  const datosFormulario = {
-    codigo: marcaCodigo.value,
-    marca: marca.value,
-    utilizable: utilizable.checked
-  }
-  let hayError = validarMarcaNuevo(marca, marcaCodigo);
+  const fileInput = header.querySelector("input[type='file']");
+  let hayError = validarMarcaNuevo(marca, marcaCodigo, fileInput);
   if (!hayError) {
+    const file = fileInput.files;
+    const formData = new FormData();
+    formData.append("archivo", file[0]);
+    formData.append("codigo", marcaCodigo.value);
+    formData.append("marca", marca.value);
+    formData.append("utilizable", utilizable.checked);
     fetch('/admin/crearMarca', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(datosFormulario)
+      body: formData
     })
     .then(response => response.text())
     .then(data => {
@@ -408,12 +427,29 @@ function grabarMarca(e) {
         header.classList.remove("sinGuardar");
         header.setAttribute("data-codigoMarca", marcaCodigo.value);
         header.nextElementSibling.setAttribute("data-codigoMarca", marcaCodigo.value)
+        const imgMarca = header.querySelector(".imgMarca")
+        imgMarca.style.display = "block";
+        const rutaImagen = `/images/${data.rutaImg}`
+        imgMarca.setAttribute("src", rutaImagen)
         marcaCodigo.remove();
         M.toast({
           html: 'Grabación existosa',
           classes: 'rounded green lighten-1',
           displayLength: 2000
         });
+      } else if (typeof(data.mensaje) === 'object') {
+        if (data.mensaje?.codigo?.msg)
+          mostrarTooltip(marcaCodigo, data.mensaje.codigo.msg);
+        else
+          ocultarTooltip(marcaCodigo);
+        if (data.mensaje?.marca?.msg)
+          mostrarTooltip(marca, data.mensaje.marca.msg);
+        else
+          ocultarTooltip(marca);
+        if (data.mensaje?.archivo?.msg)
+          mostrarTooltip(fileInput, data.mensaje.archivo.msg);
+        else
+          ocultarTooltip(fileInput);
       } else {
         M.toast({
           html: data.mensaje,
@@ -478,31 +514,43 @@ function actualizarArticulo(e) {
   const precio = contArticuloActualizar.querySelector(".precio")
   const precioUSD = contArticuloActualizar.querySelector(".precioUSD")
   const utilizable = contArticuloActualizar.querySelector(".utilizable")
-  const datosFormulario = {
-    codigo: articulo.getAttribute("data-codigo"),
-    articulo: articulo.value,
-    precio: precio.value.slice(1),
-    precioUSD: precioUSD.value.slice(3),
-    utilizable: utilizable.checked
-  }
+  const formData = new FormData();
+  formData.append("codigo", articulo.getAttribute("data-codigo"));
+  formData.append("articulo", articulo.value);
+  formData.append("precio", precio.value.slice(1));
+  formData.append("precioUSD", precioUSD.value.slice(3));
+  formData.append("utilizable", utilizable.checked);
   let hayError = validarArticuloActualizar(articulo, precio, precioUSD);
   if (!hayError) {
     fetch('/admin/actualizarArticulo', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(datosFormulario)
+      body: formData
     })
     .then(response => response.text())
     .then(data => {
       data = JSON.parse(data)
       if (!data.hayError) {
+        ocultarTooltip(articulo);
+        ocultarTooltip(precio);
+        ocultarTooltip(precioUSD);
         M.toast({
           html: 'Actualización existosa',
           classes: 'rounded green lighten-1',
           displayLength: 2000
         });
+      } else if (typeof(data.mensaje) === 'object') {
+        if (data.mensaje?.articulo?.msg)
+          mostrarTooltip(articulo, data.mensaje.articulo.msg);
+        else
+          ocultarTooltip(articulo);
+        if (data.mensaje?.precio?.msg)
+          mostrarTooltip(precio, data.mensaje.precio.msg);
+        else
+          ocultarTooltip(precio);
+        if (data.mensaje?.precioUSD?.msg)
+          mostrarTooltip(precioUSD, data.mensaje.precioUSD.msg);
+        else
+          ocultarTooltip(precioUSD);
       } else {
         M.toast({
           html: data.mensaje,
@@ -530,22 +578,18 @@ function grabarArticulo(e) {
   const precio = contArticuloNuevo.querySelector(".precio")
   const precioUSD = contArticuloNuevo.querySelector(".precioUSD")
   const utilizable = contArticuloNuevo.querySelector(".utilizable")
-  const datosFormulario = {
-    codigoMarca: codigoMarca,
-    codigo: codigoArticulo.value,
-    articulo: articulo.value,
-    precio: precio.value.slice(1),
-    precioUSD: precioUSD.value.slice(3),
-    utilizable: utilizable.checked
-  }
+  const formData = new FormData();
+  formData.append("codigoMarca", codigoMarca);
+  formData.append("codigo", codigoArticulo.value);
+  formData.append("articulo", articulo.value);
+  formData.append("precio", precio.value.slice(1));
+  formData.append("precioUSD", precioUSD.value.slice(3));
+  formData.append("utilizable", utilizable.checked);
   let hayError = validarArticuloNuevo(codigoArticulo, articulo, precio, precioUSD);
   if (!hayError) {
     fetch('/admin/crearArticulo', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(datosFormulario)
+      body: formData
     })
     .then(response => response.text())
     .then(data => {
@@ -634,6 +678,23 @@ function grabarArticulo(e) {
           classes: 'rounded green lighten-1',
           displayLength: 2000
         });
+      } else if (typeof(data.mensaje) === 'object') {
+        if (data.mensaje?.codigo?.msg)
+          mostrarTooltip(codigoArticulo, data.mensaje.codigo.msg);
+        else
+          ocultarTooltip(codigoArticulo);
+        if (data.mensaje?.articulo?.msg)
+          mostrarTooltip(articulo, data.mensaje.articulo.msg);
+        else
+          ocultarTooltip(articulo);
+        if (data.mensaje?.precio?.msg)
+          mostrarTooltip(precio, data.mensaje.precio.msg);
+        else
+          ocultarTooltip(precio);
+        if (data.mensaje?.precioUSD?.msg)
+          mostrarTooltip(precioUSD, data.mensaje.precioUSD.msg);
+        else
+          ocultarTooltip(precioUSD);
       } else {
         M.toast({
           html: data.mensaje,
@@ -821,29 +882,31 @@ function actualizarAccesorio(element) {
   const accesorio = container.querySelector(".nombreAccesorio");
   const utilizable = container.querySelector(".utilizable");
   const codigoAccesorio = accesorio.getAttribute("data-codigoAccesorio")
-  const dataForm = {
-    codigoAccesorio,
-    utilizable: utilizable.checked,
-    nombre: accesorio.value
-  }
-  let hayError = validarActualizarcionAccesorio(accesorio);
+  const formData = new FormData();
+  formData.append("codigoAccesorio", codigoAccesorio);
+  formData.append("utilizable", utilizable.checked);
+  formData.append("nombreAccesorio", accesorio.value);
+  let hayError = validarAccesorioActualizacion(accesorio);
   if (!hayError) {
     fetch('/admin/updateAccesorio', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(dataForm)
+      body: formData
     })
     .then(response => response.text())
     .then(data => {
       data = JSON.parse(data)
       if (!data.hayError) {
+        ocultarTooltip(accesorio);
         M.toast({
           html: 'Actualización existosa',
           classes: 'rounded green lighten-1',
           displayLength: 2000
         });
+      } else if (typeof(data.mensaje) === 'object') {
+        if (data.mensaje?.nombreAccesorio?.msg)
+          mostrarTooltip(accesorio, data.mensaje.nombreAccesorio.msg);
+        else
+          ocultarTooltip(accesorio);
       } else {
         M.toast({
           html: data.mensaje,
@@ -867,19 +930,15 @@ function grabarAccesorio(element) {
   const accesorio = container.querySelector(".nombreAccesorio");
   const utilizable = container.querySelector(".utilizable");
   const codigoAccesorio = container.querySelector(".codigoAccesorio");
-  const dataForm = {
-    codigoAccesorio: codigoAccesorio.value,
-    utilizable: utilizable.checked,
-    nombre: accesorio.value
-  }
+  const formData = new FormData();
+  formData.append("codigoAccesorio", codigoAccesorio.value);
+  formData.append("utilizable", utilizable.checked);
+  formData.append("nombreAccesorio", accesorio.value);
   let hayError = validarAccesorioNuevo(accesorio, codigoAccesorio);
   if (!hayError) {
     fetch('/admin/createAccesorio', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(dataForm)
+      body: formData
     })
     .then(response => response.text())
     .then(data => {
@@ -893,11 +952,21 @@ function grabarAccesorio(element) {
         const button = container.querySelector(".grabarAccesorio");
         button.classList.remove("grabarAccesorio");
         button.classList.add("actualizarAccesorio");
+        ocultarTooltip(accesorio);
         M.toast({
           html: 'Grabación existosa',
           classes: 'rounded green lighten-1',
           displayLength: 2000
         });
+      } else if (typeof(data.mensaje) === 'object') {
+        if (data.mensaje?.codigoAccesorio?.msg)
+          mostrarTooltip(codigoAccesorio, data.mensaje.codigoAccesorio.msg);
+        else
+          ocultarTooltip(codigoAccesorio);
+        if (data.mensaje?.nombreAccesorio?.msg)
+          mostrarTooltip(accesorio, data.mensaje.nombreAccesorio.msg);
+        else
+          ocultarTooltip(accesorio);
       } else {
         M.toast({
           html: data.mensaje,
@@ -957,7 +1026,7 @@ function eliminarAccesorio(element) {
   });
 }
 
-function validarActualizarcionAccesorio(accesorio) {
+function validarAccesorioActualizacion(accesorio) {
   let hayErrorNombreAccesorio = validarNombreArticulo(accesorio);
   return hayErrorNombreAccesorio;
 }
@@ -973,10 +1042,11 @@ function validarMarcaActualizar(marca) {
   return hayErrorNombre;
 }
 
-function validarMarcaNuevo(marca, codigo) {
+function validarMarcaNuevo(marca, codigo, fileInput) {
   let hayErrorNombre = validarNombreArticulo(marca);
   let hayErrorCodigo = validarNombreArticulo(codigo);
-  return hayErrorNombre || hayErrorCodigo;
+  let hayErrorArchivo = validarExistenciaArchivo(fileInput);
+  return hayErrorNombre || hayErrorCodigo || hayErrorArchivo;
 }
 
 function validarArticuloNuevo(codigoArticulo, articulo, precio, precioUSD) {
@@ -1009,6 +1079,18 @@ function validarCodigo(codigo) {
   return hayError;
 }
 
+function validarExistenciaArchivo(fileInput) {
+  let hayError = false;
+  if (fileInput.files.length === 0) {
+    mostrarTooltip(fileInput, "Subir imagen");
+    hayError = true;
+  }
+  else{
+    ocultarTooltip(fileInput);
+    hayError = false;
+  }
+  return hayError;
+}
 
 function validarNombreArticulo(articulo) {
   let valor = articulo.value;

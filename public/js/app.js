@@ -70,11 +70,6 @@ $(document).ready(function() {
     step1.classList.remove('hide');
     step2.classList.add('hide');
   })
-
-  comprar.addEventListener("click", e => {
-    step3.classList.remove('hide');
-    step2.classList.add('hide');
-  })
   
   finalizar.addEventListener('click', e => {
     instance.close(modal);
